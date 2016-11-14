@@ -1,0 +1,14 @@
+This directory contains code for doing feel good tests on the TASP VSIPL
+Implementation. Not every function is tested, this is a work in progress.
+
+Simple functions (simple being defined by how hard it is to test) are done
+in test_sc_simple. Harder functions are tested in there own directories.
+Hopefully most directories will be obvious by there name.
+
+Generally you sould be able to go to a directory, type make, and run the 
+resulting executable (after you have made VSIPL of course). In general output
+should be piped to a file and searched for error. There is a lot of output,
+so trying to read it line by line would be boring unless your only testing
+a couple of functions.
+
+For more information read the README in the test_sc_simple directory. 
