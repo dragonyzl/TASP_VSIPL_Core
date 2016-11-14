@@ -1,9 +1,0 @@
-This example needs src_VU/graphics/X files which require X window support.
-
-Not ready for prime time so unless you know what you are doing, suggest
-skiping this example.
-
-To Make VUX functions you must go to the src_VU/grapics/X directory and
-mess with the Makefile so it can find the X include files.
-
-To make example you must mess with Makefile so linker can find X11
