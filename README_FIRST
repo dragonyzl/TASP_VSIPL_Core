@@ -1,0 +1,48 @@
+This library, called the TASP_VSIPLcore library is an implementation of 
+a VSIP Library (Vector/Signal/Image Processing Library) as defined 
+by the VSIPL Forum for a CORE profile. This is not the VSIPL Reference 
+library being developed by HRL,LLC as part of there contract with DARPA. 
+Although the people working on the TASP_VSIPL library are involved with the 
+VSIPL Forum, the library implementation is not controlled or designed by any 
+consensus of the forum, other than the need to strive for compliance to the 
+VSIPL specification.
+
+The TASP_VSIPL library is an effort to produce a VSIPL library suitable for 
+demonstration and early development and testing of VSIPL code and ideas. It is 
+based upon the pre-alpha version of Reference code produced by Hughes Research 
+Lab, and released to forum members in December, 1997. Note that Hughes 
+Research Lab has since changed its name to HRL, LLC as the result of 
+reorganizations and other changes. The TASP_VSIPL library has undergone major 
+changes from the original Reference code upon which it was based, and bears 
+little resemblance to either the original Reference code or the current 
+Reference code.
+
+The Tactical Advanced Signal Processing Common Operating Environment (TASP 
+COE) effort is striving to produce a common operating environment for signal 
+processing throughout the Navy and DOD for the COTS environment. VSIPL is 
+thought by TASP to have a good chance of becoming a standard signal processing 
+library for many vendors who supply DOD high performance computing products. 
+For this reason TASP is supporting the VSIPL effort. This library is part of 
+that support effort, and funding for the continuing development of the 
+TASP_VSIPL demonstration library is mostly from that effort. (PMS 411, Jim 
+Broughton).
+
+It is the intent of the TASP VSIPL library effort to produce code suitable for 
+use on any platform supporting an ANSI C compiler. A primary goal of this 
+implementation is to get code into the hands of users at the earliest 
+opportunity. As such the user should view any results with scepticism and 
+should perform as many "feel good tests" as possible.
+
+The TASP VSIPL code is required to be freely available for any use. The primary 
+author is a Government Employee, and his work on VSIPL has been released to the 
+public. Other code, produced by people who are not employed by the Government, 
+have a Copyright statement which allows free use of the code, except that the 
+Copyright must be included. Any party may donate code to the library, but they 
+must include a similar copyright in order for the code to be included in the 
+TASP version of the VSIPL library.
+
+For more information contact
+Randall Judd
+Space and Naval Warfare Systems Center, San Diego, Code D881
+619 553 3086
+judd@spawar.navy.mil
