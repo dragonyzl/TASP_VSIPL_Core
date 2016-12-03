@@ -1,3 +1,5 @@
+all : example1 example1t example2 example2t example3 example3t
+
 example1:	example1.c
 	gcc -fopenmp -o example1 example1.c -L../../lib -I../../include -lvsip_c
 example1t:	example1t.c
