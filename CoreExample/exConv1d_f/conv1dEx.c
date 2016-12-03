@@ -21,6 +21,7 @@
 
 int main(){vsip_init((void*)0);
 {
+  int mode;
    vsip_length Yl = Nl + Ml -1;
    vsip_vview_f *h = vsip_vcreate_hanning_f(Ml,0)/*vsip_vcreate_f(1024,0)*/,
                 *x = vsip_vcreate_f(Nl,0),
@@ -46,6 +47,12 @@ int main(){vsip_init((void*)0);
    printf("h =");VU_vprintm_f("8.6",h);
    printf("x =");VU_vprintm_f("8.6",x);  
    fflush(stdout);
+
+
+mode=2;
+switch (mode)
+{
+  case 1:
    {
       vsip_conv1d_f *conv = vsip_conv1d_create_f(h,sym,Nl,Ds,VSIP_SUPPORT_FULL,0,0);
       { vsip_length length = (Nl + Ml -2)/Ds + 1;
@@ -53,9 +60,12 @@ int main(){vsip_init((void*)0);
       }
       vsip_convolve1d_f(conv,x,y);
       vsip_conv1d_destroy_f(conv); 
-   }
+
    printf("yFull =");VU_vprintm_f("8.6",y);
    fflush(stdout);
+   break;
+   }
+   case 2:
    {
       vsip_conv1d_f *conv = vsip_conv1d_create_f(h,sym,Nl,Ds,VSIP_SUPPORT_SAME,0,0);
       { vsip_length length = (Nl - 1)/Ds + 1;
@@ -63,9 +73,12 @@ int main(){vsip_init((void*)0);
       }
       vsip_convolve1d_f(conv,x,y);
       vsip_conv1d_destroy_f(conv);
-   }
+   
    printf("ySame =");VU_vprintm_f("8.6",y);
    fflush(stdout);
+   break;
+   }
+   case 3:
    {
       vsip_conv1d_f *conv = vsip_conv1d_create_f(h,sym,Nl,Ds,VSIP_SUPPORT_MIN,0,0);
       { vsip_length length = (Nl - 1)/Ds - (Ml -1)/Ds + 1;
@@ -73,9 +86,15 @@ int main(){vsip_init((void*)0);
       }
       vsip_convolve1d_f(conv,x,y);
       vsip_conv1d_destroy_f(conv);
-   }
+   
    printf("yMin =");VU_vprintm_f("8.6",y);
    fflush(stdout);
+   break;
+   }
+default:
+  break;
+}
+
    vsip_valldestroy_f(h); vsip_valldestroy_f(x); vsip_valldestroy_f(y);
    } vsip_finalize((void*)0); return 0;
 }

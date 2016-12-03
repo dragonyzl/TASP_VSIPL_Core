@@ -1610,6 +1610,10 @@ void (vsip_vcopy_f_f)(
   const vsip_vview_f* a,
   const vsip_vview_f* r);
 
+void (vsip_vcopy_f_f_para)(
+  const vsip_vview_f* a,
+  const vsip_vview_f* r);  
+
 void (vsip_vcopy_i_d)(
   const vsip_vview_i* a,
   const vsip_vview_d* r);
@@ -1631,6 +1635,10 @@ void (vsip_cvcopy_d_d)(
   const vsip_cvview_d* r);
 
 void (vsip_cvcopy_f_f)(
+  const vsip_cvview_f* a,
+  const vsip_cvview_f* r);
+
+void (vsip_cvcopy_f_f_para)(
   const vsip_cvview_f* a,
   const vsip_cvview_f* r);
 
@@ -2944,6 +2952,11 @@ void (vsip_svmul_f)(
      const vsip_vview_f* b,
      const vsip_vview_f* r);
 
+void (vsip_svmul_f_para)(
+     vsip_scalar_f alpha,
+     const vsip_vview_f* b,
+     const vsip_vview_f* r);
+
 void (vsip_vdiv_f)(
      const vsip_vview_f* a,
      const vsip_vview_f* b,
@@ -2960,6 +2973,11 @@ void (vsip_vsdiv_f)(
      const vsip_vview_f* r);
 
 void (vsip_vadd_f)(
+     const vsip_vview_f* a,
+     const vsip_vview_f* b,
+     const vsip_vview_f* r);
+
+void (vsip_vadd_f_para)(
      const vsip_vview_f* a,
      const vsip_vview_f* b,
      const vsip_vview_f* r);
@@ -3205,8 +3223,14 @@ void (vsip_vramp_f)(
 
 vsip_scalar_f (vsip_vsumval_f)(
      const vsip_vview_f* a);
-   
+/******************************************************************/ 
+vsip_scalar_f (vsip_vsumval_f_para)(
+     const vsip_vview_f* a);
+
 vsip_scalar_f (vsip_vsumsqval_f)(
+     const vsip_vview_f* a);
+/******************************************************************/
+vsip_scalar_f (vsip_vsumsqval_f_para)(
      const vsip_vview_f* a);
 
 vsip_scalar_f (vsip_vmeanval_f)(
@@ -3216,6 +3240,10 @@ vsip_scalar_f (vsip_vmeansqval_f)(
      const vsip_vview_f* a);
 
 vsip_scalar_f (vsip_vdot_f)(
+     const vsip_vview_f* a,
+     const vsip_vview_f* b);
+/******************************************************************/
+vsip_scalar_f (vsip_vdot_f_para)(
      const vsip_vview_f* a,
      const vsip_vview_f* b);
 
@@ -3605,6 +3633,12 @@ void (vsip_cvmmul_f)(
      vsip_major major,
      const vsip_cmview_f* r);
 
+void (vsip_cvmmul_f_para)(
+     const vsip_cvview_f* a,
+     const vsip_cmview_f* b,
+     vsip_major major,
+     const vsip_cmview_f* r);
+
 void (vsip_rvcmmul_f)(
      const vsip_vview_f* a,
      const vsip_cmview_f* b,
@@ -3612,6 +3646,11 @@ void (vsip_rvcmmul_f)(
      const vsip_cmview_f* r);
 
 void (vsip_cvmul_f)(
+     const vsip_cvview_f* a,
+     const vsip_cvview_f* b,
+     const vsip_cvview_f* r);
+/************************************************************************/
+void (vsip_cvmul_f_para)(
      const vsip_cvview_f* a,
      const vsip_cvview_f* b,
      const vsip_cvview_f* r);
@@ -3627,6 +3666,11 @@ void (vsip_rcvmul_f)(
      const vsip_cvview_f* r);
 
 void (vsip_rscvmul_f)(
+     vsip_scalar_f alpha,
+     const vsip_cvview_f* b,
+     const vsip_cvview_f* r);
+
+void (vsip_rscvmul_f_para)(
      vsip_scalar_f alpha,
      const vsip_cvview_f* b,
      const vsip_cvview_f* r);
@@ -3848,7 +3892,16 @@ void (vsip_cvconj_f)(
      const vsip_cvview_f* a,
      const vsip_cvview_f* r);
 
+void (vsip_cvconj_f_para)(
+     const vsip_cvview_f* a,
+     const vsip_cvview_f* r);
+
 void (vsip_cvjmul_f)(
+     const vsip_cvview_f* a,
+     const vsip_cvview_f* b,
+     const vsip_cvview_f* w);
+
+void (vsip_cvjmul_f_para)(
      const vsip_cvview_f* a,
      const vsip_cvview_f* b,
      const vsip_cvview_f* w);
@@ -4103,7 +4156,23 @@ void (vsip_gemp_f)(
        vsip_scalar_f,
        const vsip_mview_f *);
 
+void (vsip_gemp_f_para)(
+       vsip_scalar_f,
+       const vsip_mview_f *,
+       vsip_mat_op,
+       const vsip_mview_f *,
+       vsip_mat_op,
+       vsip_scalar_f,
+       const vsip_mview_f *);
+
 void (vsip_gems_f)( 
+       vsip_scalar_f,
+       const vsip_mview_f *, 
+       vsip_mat_op, 
+       vsip_scalar_f,
+       const vsip_mview_f *); 
+
+void (vsip_gems_f_para)( 
        vsip_scalar_f,
        const vsip_mview_f *, 
        vsip_mat_op, 
@@ -4778,6 +4847,10 @@ void vsip_crfftop_f(
 void vsip_ccfftip_f(
      const vsip_fft_f *fft,
      const vsip_cvview_f *xy);
+
+void vsip_ccfftip_f_para(
+     const vsip_fft_f *fft,
+     const vsip_cvview_f *xy);
         
 int vsip_fft_destroy_f(
      vsip_fft_f *fft);
@@ -4837,6 +4910,10 @@ void vsip_crfftmop_f(
      const vsip_mview_f   *y);
 
 void vsip_ccfftmip_f(
+     const vsip_fftm_f *fft,
+     const vsip_cmview_f *xy);
+
+void vsip_ccfftmip_f_para(
      const vsip_fftm_f *fft,
      const vsip_cmview_f *xy);
 
@@ -5021,6 +5098,13 @@ void vsip_correlate1d_f(
       const vsip_vview_f *x,
       const vsip_vview_f *y);
 
+void vsip_correlate1d_f_para(
+      const vsip_corr1d_f *cor,
+      vsip_bias bias,
+      const vsip_vview_f *h,
+      const vsip_vview_f *x,
+      const vsip_vview_f *y);
+
 void vsip_corr1d_getattr_f(
       const vsip_corr1d_f*,
       vsip_corr1d_attr*);
@@ -5044,6 +5128,13 @@ void vsip_ccorrelate1d_f(
       const vsip_cvview_f *x,
       const vsip_cvview_f *y);
 
+void vsip_ccorrelate1d_f_para(
+      const vsip_ccorr1d_f *cor,
+      vsip_bias bias,
+      const vsip_cvview_f *h,
+      const vsip_cvview_f *x,
+      const vsip_cvview_f *y);
+
 void vsip_ccorr1d_getattr_f(
       const vsip_ccorr1d_f*,
       vsip_corr1d_attr*);
@@ -5061,6 +5152,13 @@ int vsip_corr1d_destroy_d(
       vsip_corr1d_d *cor);
 
 void vsip_correlate1d_d(
+      const vsip_corr1d_d *cor,
+      vsip_bias bias,
+      const vsip_vview_d *h,
+      const vsip_vview_d *x,
+      const vsip_vview_d *y);
+
+void vsip_correlate1d_d_para(
       const vsip_corr1d_d *cor,
       vsip_bias bias,
       const vsip_vview_d *h,
@@ -5109,6 +5207,11 @@ int vsip_conv1d_destroy_f(
       vsip_conv1d_f*);
  
 void vsip_convolve1d_f(
+      const vsip_conv1d_f*,
+      const vsip_vview_f*,
+      const vsip_vview_f*);
+
+void vsip_convolve1d_f_para(
       const vsip_conv1d_f*,
       const vsip_vview_f*,
       const vsip_vview_f*);

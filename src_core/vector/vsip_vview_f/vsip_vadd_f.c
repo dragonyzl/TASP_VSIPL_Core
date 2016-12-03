@@ -85,3 +85,26 @@ void (vsip_vadd_f)(
            *(rp += rst) = *(ap += ast) + *(bp += bst);
     }
 }
+
+
+void (vsip_vadd_f_para)(
+  const vsip_vview_f *a,
+  const vsip_vview_f *b,
+  const vsip_vview_f *r) {	/* r_j = a_j + b_j	*/
+      /*define variables*/
+      /* register */ vsip_length n = r->length;
+      /* register */ vsip_stride ast = a->stride * a->block->rstride,
+                                 bst = b->stride * b->block->rstride,
+                                 rst = r->stride * r->block->rstride;
+      vsip_scalar_f *ap = (a->block->array) + a->offset * a->block->rstride,
+                    *bp = (b->block->array) + b->offset * b->block->rstride,
+                    *rp = (r->block->array) + r->offset * r->block->rstride;
+      /*end define*/
+      
+      /*ap -= ast; bp -= bst; rp -= rst;*/
+      vsip_length i;
+#pragma omp parallel for
+      for(i=0;i<n;i++){
+           *(rp + i * rst) = *(ap + i * ast) + *(bp + i * bst);
+    }
+}

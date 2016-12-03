@@ -42,6 +42,7 @@
 
 #include<vsip.h>
 #include<vsip_vviewattributes_f.h>
+#include<omp.h>
 
 extern void (vsip_vcheck_valid_f)(const char*,
   const vsip_vview_f*);
@@ -92,4 +93,28 @@ void (vsip_vcopy_f_f)(
       while(n-- > 0)
            *(rp += rst) = *(ap += ast);
    }
+}
+
+
+
+void (vsip_vcopy_f_f_para)(
+  const vsip_vview_f* a,
+  const vsip_vview_f* r) {
+
+  {
+      /* register */ vsip_length n   = r->length;
+      /* register */ vsip_stride ast = a->stride * a->block->rstride,
+                                 rst = r->stride * r->block->rstride;
+      vsip_scalar_f *ap = (a->block->array) + a->offset * a->block->rstride,
+                    *rp = (r->block->array) + r->offset * r->block->rstride;
+      /*end define*/
+
+      vsip_length i;
+#pragma omp parallel for      
+      for(i=0;i<n;i++){
+          *(rp + i * rst) = *(ap + i * ast);
+           /* *(rp += rst) = *(ap += ast);*/
+      }
+  }
+
 }

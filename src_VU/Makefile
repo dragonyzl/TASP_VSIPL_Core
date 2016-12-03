@@ -5,7 +5,7 @@
 ##
 CC=gcc
 INCLUDE=-I../include
-OPTIONS=-O2 -Wall -ansi -pedantic
+OPTIONS=-O2 -Wall -ansi -pedantic -fopenmp
 AR=ar
 AR_OPTIONS=rcvs
 ARLIBP=libVU_c.a

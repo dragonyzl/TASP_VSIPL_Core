@@ -78,3 +78,25 @@ void (vsip_svmul_f)(
         *(rp += rst) = alpha * *(bp += bst);
   }
 }
+
+
+void (vsip_svmul_f_para)(
+  vsip_scalar_f alpha,
+  const vsip_vview_f *b,
+  const vsip_vview_f *r) {	/* r_j = alpha*b_j	*/
+
+  { 
+    /* register */ vsip_length n = r->length;
+    /* register */ vsip_stride bst = b->stride * b->block->rstride,
+                               rst = r->stride * r->block->rstride;
+    vsip_scalar_f *bp = (b->block->array) + b->offset * b->block->rstride,
+                  *rp = (r->block->array) + r->offset * r->block->rstride;
+
+      vsip_length i;
+#pragma omp parallel for
+      for(i=0;i<n;i++){
+        *(rp + i*rst) = alpha * *(bp + i*bst);
+      }
+  }
+}
+

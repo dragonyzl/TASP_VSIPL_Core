@@ -7,6 +7,7 @@
 
 /* building blocks */
 void VI_dft_f(vsip_fft_f*);
+void VI_dft_f_para(vsip_fft_f*);
 void VI_fft2_f(vsip_fft_f*);
 void VI_ifft2_f(vsip_fft_f*);
 void VI_fft3_f(vsip_fft_f*);
@@ -21,6 +22,7 @@ void VI_fft8_f(vsip_fft_f*);
 void VI_ifft8_f(vsip_fft_f*);
 vsip_fft_f *VI_mod_type(vsip_fft_f* , vsip_ffttype);
 void VI_p0pF_f(vsip_fft_f*);
+void VI_p0pF_f_para(vsip_fft_f*);
 
 /* Utility Function to determine If length is a Power of 2, 3, 4 */
 /* and return -1 if not and power if true */
@@ -30,7 +32,9 @@ vsip_length VI_nuV_f(vsip_length, vsip_scalar_vi*,vsip_scalar_vi*,vsip_scalar_vi
 /* Utility Functions for unsorting */
 vsip_scalar_vi VI_jofk_f(vsip_scalar_vi, vsip_scalar_vi *, vsip_scalar_vi *, vsip_scalar_vi,vsip_length);
 void VI_sort_copy_f(vsip_fft_f*);
+void VI_sort_copy_f_para(vsip_fft_f*);
 void VI_fft_wt_f(vsip_fft_f*);
 void VI_cvgather_f(const vsip_cvview_f*,const vsip_scalar_vi*,const vsip_cvview_f*);
 void VI_ccfftip_f(const vsip_fft_f*, const vsip_cvview_f*);
+void VI_ccfftip_f_para(const vsip_fft_f*, const vsip_cvview_f*);
 #endif /*VI_ft_f.h*/

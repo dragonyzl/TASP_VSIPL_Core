@@ -78,9 +78,62 @@ void VI_dft_f(vsip_fft_f *fft) {
       tbpr = bpr + k * bst;
       tbpi = bpi + k * bst;
       *cpr += (*apr * *tbpr - *api * *tbpi); 
-      *cpi += (*api * *tbpr + *apr * *tbpi);;
+      *cpi += (*api * *tbpr + *apr * *tbpi);
       apr += ast; api += ast;
     }
+    cpr += cst; cpi += cst;
+  }
+  vsip_cvcopy_f_f(c,a);
+  return;
+} 
+
+
+void VI_dft_f_para(vsip_fft_f *fft) {
+  vsip_cvview_f *a = fft->x;
+  vsip_scalar_vi i = 0, j = 0, k = 0;
+  vsip_scalar_vi N = (vsip_scalar_vi)a->length;
+  vsip_cvview_f *b = fft->wt,
+                *c   = fft->temp;
+  vsip_stride cast = a->block->cstride;
+  vsip_stride cbst = b->block->cstride;
+  vsip_stride ccst = c->block->cstride;
+  /* register */ 
+  vsip_stride ast = (cast * a->stride),
+              bst = (cbst * fft->N / N),
+              cst = (ccst * c->stride);
+  vsip_scalar_f *aprp = (vsip_scalar_f*) ((a->block->R->array) + cast * a->offset),
+                *apr,
+                *bpr  = (vsip_scalar_f*) ((b->block->R->array) + cbst * b->offset),
+                *tbpr,
+                *cpr = (vsip_scalar_f*) ((c->block->R->array) + ccst * c->offset);
+  vsip_scalar_f *apip = (vsip_scalar_f*) ((a->block->I->array) + cast * a->offset),
+                *api,
+                *bpi  = (vsip_scalar_f*) ((b->block->I->array) + cbst * b->offset),
+                *tbpi,
+                *cpi = (vsip_scalar_f*) ((c->block->I->array) + cbst * c->offset);
+  b->length = N;
+  c->length = N;
+  for(j=0; j<N; j++){
+    apr = aprp; api = apip;
+    *cpr = 0; *cpi = 0;
+    *cpr += (*apr * *bpr - *api * *bpi);
+    *cpi += (*api * *bpr + *apr * *bpi);
+    k = 0;
+    apr += ast; api += ast;
+    vsip_scalar_f cprsum,cpisum;
+    cprsum=0;cpisum=0;
+#pragma omp parallel for reduction(+:cprsum, cpisum)
+    for(i=1; i<N; i++){
+      k = i*j;
+      if(k > N-1) k -= N;
+      tbpr = bpr + k * bst;
+      tbpi = bpi + k * bst;
+      vsip_scalar_f currapr = *(apr + i * ast);
+      vsip_scalar_f currapi = *(api + i * ast);
+      cprsum += (currapr * *tbpr - currapi * *tbpi); 
+      cpisum += (currapi * *tbpr + currapr * *tbpi);
+    }
+    *cpr=cprsum;*cpi=cpisum;
     cpr += cst; cpi += cst;
   }
   vsip_cvcopy_f_f(c,a);
@@ -1168,6 +1221,171 @@ void VI_p0pF_f(vsip_fft_f *fft)
     fft->stage--;
     return;
 }
+
+void VI_p0pF_f_para(vsip_fft_f *fft)
+{
+  vsip_scalar_vi p0 = fft->p0[fft->stage];
+  vsip_scalar_vi pF = fft->pF[fft->stage];
+  vsip_scalar_vi M  = fft->pn[fft->stage];
+
+  int N   = ((fft->stage) == 0) ? fft->N : fft->pF[fft->stage - 1];
+  vsip_scalar_vi Ns = N;
+  vsip_scalar_vi N1;
+  vsip_scalar_vi wtstr = fft->N / N;
+  vsip_scalar_vi seg = 1;
+  vsip_scalar_vi k=0,i=0,j=0,case_pF;
+  vsip_scalar_vi cxst = fft->x->block->cstride;
+
+  void (*fft_p)(vsip_fft_f*) = VI_p0pF_f_para;
+
+  vsip_cvattr_f xattr;
+
+  fft->x_r = (vsip_scalar_f *)((fft->x->block->R->array) + cxst * fft->x->offset);
+  fft->x_i = (vsip_scalar_f *)((fft->x->block->I->array) + cxst * fft->x->offset);
+  fft->xst = cxst * fft->x->stride;
+
+  vsip_cvgetattrib_f(fft->x,&xattr);
+
+  fft->stage++;
+  case_pF = (pF < 9) ? pF : ((fft->stage) == (fft->length )) ? 101 : 103;
+
+   fft->wt->length = p0;   /* set weight vector length*/
+   fft->x->length = p0;     /* set x vector length */
+
+  if(fft->d == -1){ /*forward section */
+      switch( p0){ /* fft building block for p0 */
+        case 2  : fft_p = VI_fft2_f; break;
+        case 3  : fft_p = VI_fft3_f; break;
+        case 4  : fft_p = VI_fft4_f; break;
+        case 5  : fft_p = VI_fft5_f; break;
+        case 7  : fft_p = VI_fft7_f; break;
+        case 8  : fft_p = VI_fft8_f; break;
+      }
+      for(k=0; k<M-1; k++ ) { /* (M-1 segments) *( pF building blocks of length p0)*/
+        N1 = Ns;
+        Ns = Ns/p0; 
+        fft->x->stride = xattr.stride * Ns; /* x stride for segment */
+        fft->xpst = Ns * fft->xst;
+        fft->wt->stride = 0;
+        /*j = 0 */
+        fft->x->offset = xattr.offset;
+        fft->xp_r = fft->x_r;
+        fft->xp_i = fft->x_i;
+        fft_p(fft);
+        for(i = N1; (int)i < N; i+= N1){
+          fft->x->offset = xattr.offset + xattr.stride * i;
+          fft->xp_r = fft->x_r + fft->xst * i;
+          fft->xp_i = fft->x_i + fft->xst * i;
+          fft_p(fft);
+          VI_fft_wt_f(fft);
+        }
+        fft->wt->stride += (seg * wtstr); 
+        for(j=1; j<Ns; j++){
+          for(i = j; (int)i < N; i+= N1){
+            fft->x->offset = xattr.offset + xattr.stride * i;
+            fft->xp_r = fft->x_r + fft->xst * i;
+            fft->xp_i = fft->x_i + fft->xst * i;
+            fft_p(fft);
+            VI_fft_wt_f(fft); /*vsip_cvmul_f(fft->x,wt,fft->x);*/
+          }
+          fft->wt->stride += (seg * wtstr);
+        }  
+      seg *= p0 ;
+      }
+      N1 = Ns;
+      Ns = Ns/pF; 
+      fft->x->stride = xattr.stride * Ns;
+      fft->xpst = Ns * fft->xst;
+      fft->x->length = pF;
+      switch(case_pF){
+        case 2  : fft_p = VI_fft2_f; break;
+        case 3  : fft_p = VI_fft3_f; break;
+        case 4  : fft_p = VI_fft4_f; break;
+        case 5  : fft_p = VI_fft5_f; break;
+        case 7  : fft_p = VI_fft7_f; break;
+        case 8  : fft_p = VI_fft8_f; break;
+        case 101: fft_p = VI_dft_f; break;
+        case 103: fft_p = VI_p0pF_f_para; break;
+      }
+      for(j=0; j<Ns; j++){
+        for(i = j; (int)i < N; i+= N1){
+          fft->x->offset = xattr.offset + xattr.stride * i;
+          fft->xp_r = fft->x_r + fft->xst * i;
+          fft->xp_i = fft->x_i + fft->xst * i;
+          fft_p(fft);
+        }
+      }  
+    }  /* end forward section */
+
+      else { /*inverse section */
+      switch( p0){ /* fft building block for p0 */
+        case 2  : fft_p = VI_ifft2_f; break;
+        case 3  : fft_p = VI_ifft3_f; break;
+        case 4  : fft_p = VI_ifft4_f; break;
+        case 5  : fft_p = VI_ifft5_f; break;
+        case 7  : fft_p = VI_ifft7_f; break;
+        case 8  : fft_p = VI_ifft8_f; break;
+      }  
+      for(k=0; k<M-1; k++ ) { /* (M-1 segments) *( pF building blocks of length p0)*/
+        N1 = Ns;
+        Ns = Ns/p0;
+        fft->x->stride = xattr.stride * Ns; /* x stride for segment */
+        fft->xpst = Ns * fft->xst;
+        fft->wt->stride = 0;
+        /*j = 0 */ 
+        fft->x->offset = xattr.offset;
+        fft->xp_r = fft->x_r;
+        fft->xp_i = fft->x_i;
+        fft_p(fft);
+        for(i = N1; (int)i < N; i+= N1){
+          fft->x->offset = xattr.offset + xattr.stride * i;
+          fft->xp_r = fft->x_r + fft->xst * i;
+          fft->xp_i = fft->x_i + fft->xst * i;
+          fft_p(fft);
+          VI_fft_wt_f(fft);
+        }
+        fft->wt->stride += (seg * wtstr);
+        for(j=1; j<Ns; j++){
+          for(i = j; (int)i < N; i+= N1){
+            fft->x->offset = xattr.offset + xattr.stride * i;
+            fft->xp_r = fft->x_r + fft->xst * i;
+            fft->xp_i = fft->x_i + fft->xst * i;
+            fft_p(fft);
+            VI_fft_wt_f(fft); /*vsip_cvmul_f(fft->x,wt,fft->x);*/
+          }
+          fft->wt->stride += (seg * wtstr);
+        }
+      seg *= p0 ;
+      }  
+      N1 = Ns;
+      Ns = Ns/pF;
+      fft->x->stride = xattr.stride * Ns;
+      fft->xpst = Ns * fft->xst;
+      fft->x->length = pF;
+      switch(case_pF){
+        case 2  : fft_p = VI_ifft2_f; break;
+        case 3  : fft_p = VI_ifft3_f; break;
+        case 4  : fft_p = VI_ifft4_f; break;
+        case 5  : fft_p = VI_ifft5_f; break;
+        case 7  : fft_p = VI_ifft7_f; break;
+        case 8  : fft_p = VI_ifft8_f; break;
+        case 101: fft_p = VI_dft_f; break;
+        case 103: fft_p = VI_p0pF_f_para; break;
+      }  
+      for(j=0; j<Ns; j++){
+        for(i = j; (int)i < N; i+= N1){
+          fft->x->offset = xattr.offset + xattr.stride * i;
+          fft->xp_r = fft->x_r + fft->xst * i;
+          fft->xp_i = fft->x_i + fft->xst * i;
+          fft_p(fft);
+        }
+      }  
+    } /* end inverse section */
+    vsip_cvputattrib_f(fft->x,&xattr);
+    fft->stage--;
+    return;
+}
+
 /* init fft to x */
 void init_fft_f(vsip_cvview_f *x,vsip_fft_f* fft){
   fft->x = x;
@@ -1185,6 +1403,19 @@ void VI_ccfftip_f(const vsip_fft_f* fft, const vsip_cvview_f *x)
      VI_sort_copy_f((void*)fft);
   }
   if (fft->scale != 1) vsip_rscvmul_f(fft->scale,x,x);
+  return;
+}
+
+void VI_ccfftip_f_para(const vsip_fft_f* fft, const vsip_cvview_f *x)
+{
+  init_fft_f((void*)x,(void*)fft);
+  if(fft->dft == 1){
+     VI_dft_f_para((void*)fft);
+  }else{
+     VI_p0pF_f((void*)fft);
+     VI_sort_copy_f_para((void*)fft);
+  }
+  if (fft->scale != 1) vsip_rscvmul_f_para(fft->scale,x,x);
   return;
 }
 /* Using an already created temp data space */
@@ -1222,6 +1453,41 @@ void VI_sort_copy_f(vsip_fft_f* fft){
      *api2 = *rpi2;
      apr2 += ast; api2 += ast;
      rpr2 += rst; rpi2 += rst;
+  }
+  return;
+}
+
+void VI_sort_copy_f_para(vsip_fft_f* fft){
+  vsip_scalar_vi *x = fft->index;
+  vsip_cvview_f *a = fft->x;
+  vsip_cvview_f *r = fft->temp;
+  vsip_length n =  fft->N;
+  vsip_stride cast = a->block->cstride;
+  vsip_stride ast =  cast * a->stride;
+  vsip_stride rst = r->block->cstride;
+  vsip_scalar_f *apr = (vsip_scalar_f*) ((a->block->R->array) + cast * a->offset),
+                *rpr = (vsip_scalar_f*) r->block->R->array ;
+  vsip_scalar_f *api = (vsip_scalar_f*) ((a->block->I->array) + cast * a->offset),
+                *rpi = (vsip_scalar_f*) r->block->I->array;
+  vsip_scalar_f *apr2 = apr,
+                *rpr2 = rpr;
+  vsip_scalar_f *api2 = api,
+                *rpi2 = rpi;
+  vsip_stride xinc = 0;
+
+  vsip_length i;
+#pragma omp parallel for
+  for(i=0;i<n;i++){
+    xinc = *(x + (vsip_scalar_vi)i) * ast;
+    *(rpr + i*rst) = *(apr + xinc);
+    *(rpi + i*rst) = *(api + xinc);
+  }
+
+  n = fft->N;
+#pragma omp parallel for
+  for(i=0;i<n;i++){
+    *(apr2 + i*ast) = *(rpr2 + i*rst);
+    *(api2 + i*ast) = *(rpi2 + i*rst);
   }
   return;
 }

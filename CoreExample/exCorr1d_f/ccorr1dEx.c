@@ -24,6 +24,7 @@
 
 int main(){vsip_init((void*)0);
 {
+    int mode;
    vsip_cvview_f *x = vsip_cvcreate_f(Nval,0);
    vsip_cvview_f *h = vsip_cvcreate_f(Mval,0);
    vsip_cvview_f *y = vsip_cvcreate_f(Nval+Mval-1,0); 
@@ -42,39 +43,65 @@ int main(){vsip_init((void*)0);
    printf("h = ");VU_cvprintm_f("6.4",h);
    printf("x = ");VU_cvprintm_f("6.4",x);
 
+mode = 4;
+
+switch (mode)
+{
+case 1:
+    {
    vsip_ccorrelate1d_f(cor,VSIP_BIASED,h,x,y);
    printf("yFull = ");VU_cvprintm_f("6.4",y);
    vsip_ccorr1d_destroy_f(cor);
-
+        break;
+    }
+case 2:
+    {
    cor = vsip_ccorr1d_create_f(Mval,Nval,VSIP_SUPPORT_FULL,0,0);
    vsip_ccorrelate1d_f(cor,VSIP_UNBIASED,h,x,y);
    printf("yFullU = ");VU_cvprintm_f("6.4",y);
    vsip_ccorr1d_destroy_f(cor);
-
+        break;
+    }
+case 3:
+    {
    cor = vsip_ccorr1d_create_f(Mval,Nval,VSIP_SUPPORT_SAME,0,0);
    vsip_cvputlength_f(y,Nval);
    vsip_ccorrelate1d_f(cor,VSIP_BIASED,h,x,y);
    printf("ySame = ");VU_cvprintm_f("6.4",y);
    vsip_ccorr1d_destroy_f(cor);
+        break;
+    }
+case 4:
+    {
 
    cor = vsip_ccorr1d_create_f(Mval,Nval,VSIP_SUPPORT_SAME,0,0);
    vsip_cvputlength_f(y,Nval);
    vsip_ccorrelate1d_f(cor,VSIP_UNBIASED,h,x,y);
    printf("ySameU = ");VU_cvprintm_f("6.4",y);
    vsip_ccorr1d_destroy_f(cor);
-
+        break;
+    }
+case 5:
+    {
    cor = vsip_ccorr1d_create_f(Mval,Nval,VSIP_SUPPORT_MIN,0,0);
    vsip_cvputlength_f(y,Nval-Mval+1);
    vsip_ccorrelate1d_f(cor,VSIP_BIASED,h,x,y);
    printf("yMin= ");VU_cvprintm_f("6.4",y);
    vsip_ccorr1d_destroy_f(cor);
-
+        break;
+    }
+case 6:
+    {
    cor = vsip_ccorr1d_create_f(Mval,Nval,VSIP_SUPPORT_MIN,0,0);
    vsip_cvputlength_f(y,Nval-Mval+1);
    vsip_ccorrelate1d_f(cor,VSIP_UNBIASED,h,x,y);
    printf("yMinU= ");VU_cvprintm_f("6.4",y);
    vsip_ccorr1d_destroy_f(cor);
-
+        break;
+    } 
+default:
+    break;
+}
    vsip_cvalldestroy_f(x);
    vsip_cvalldestroy_f(h);
    vsip_cvalldestroy_f(y);

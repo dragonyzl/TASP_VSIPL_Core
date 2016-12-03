@@ -26,3 +26,10 @@ void vsip_ccfftmip_f(const vsip_fftm_f *Offt,
      VI_ccfftmip_f(fft,y);
 }
 
+void vsip_ccfftmip_f_para(const vsip_fftm_f *Offt, 
+                    const vsip_cmview_f *y)
+{
+     vsip_fftm_f Nfft = *Offt;
+     vsip_fftm_f *fft = &Nfft;
+     VI_ccfftmip_f_para(fft,y);
+}

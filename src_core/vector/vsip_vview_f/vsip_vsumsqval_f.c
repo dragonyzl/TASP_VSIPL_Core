@@ -60,12 +60,14 @@ vsip_scalar_f (vsip_vsumsqval_f)(
       /* register */ vsip_stride ast = a->stride * a->block->rstride;
       vsip_scalar_f *ap = (a->block->array) + a->offset * a->block->rstride;
       vsip_scalar_f t = 0;
+
      /* do sum */
       while(n-- > 0){
          t  += (*ap * *ap);
          ap += ast;
       }
-     /* return sum of squares */
+
+     /*return sum of squares */
       return t;
    }
 }

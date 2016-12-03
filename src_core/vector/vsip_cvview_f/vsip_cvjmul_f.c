@@ -98,3 +98,44 @@ void (vsip_cvjmul_f)(
    }
 }
 
+
+void (vsip_cvjmul_f_para)(
+  const vsip_cvview_f* a,
+  const vsip_cvview_f* b,
+  const vsip_cvview_f* r) {	/* r_j = a_j*conj(b_j)	*/
+  { 
+      /* register */ vsip_length n = r->length;
+      vsip_stride cast = a->block->cstride;
+      vsip_stride cbst = b->block->cstride;
+      vsip_stride crst = r->block->cstride;
+      vsip_scalar_f *apr = (vsip_scalar_f *)((a->block->R->array) + cast * a->offset),
+                    *bpr = (vsip_scalar_f *)((b->block->R->array) + cbst * b->offset),
+                    *rpr = (vsip_scalar_f *)((r->block->R->array) + crst * r->offset);
+      vsip_scalar_f *api = (vsip_scalar_f *)((a->block->I->array) + cast * a->offset),
+                    *bpi = (vsip_scalar_f *)((b->block->I->array) + cbst * b->offset),
+                    *rpi = (vsip_scalar_f *)((r->block->I->array) + crst * r->offset);
+      vsip_scalar_f temp;
+      /* register */ vsip_stride ast = (cast * a->stride),
+                                 bst = (cbst * b->stride),
+                                 rst = (crst * r->stride);
+      /*end define*/
+
+      vsip_length i;
+
+vsip_scalar_f *aprinit=apr;
+vsip_scalar_f *apiinit=api;
+vsip_scalar_f *bprinit=bpr;
+vsip_scalar_f *bpiinit=bpi;
+vsip_scalar_f *rprinit=rpr;
+vsip_scalar_f *rpiinit=rpi;
+#pragma omp parallel for schedule(dynamic)
+      for(i=0;i<n;i++){
+          vsip_stride astride=i*ast;
+          vsip_stride bstride=i*bst;
+          vsip_stride rstride=i*rst;
+          temp = *(aprinit+astride) * *(bprinit+bstride) + *(bpiinit+bstride) * *(apiinit+astride);
+          *(rpiinit+rstride) = *(apiinit+astride) * *(bprinit+bstride) - *(aprinit+astride) * *(bpiinit+bstride);
+          *(rprinit+rstride) = temp;
+      }
+   }
+}

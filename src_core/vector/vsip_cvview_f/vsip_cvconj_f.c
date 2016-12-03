@@ -87,3 +87,27 @@ void (vsip_cvconj_f)(
   }
 }
 
+void (vsip_cvconj_f_para)(
+  const vsip_cvview_f* a,
+  const vsip_cvview_f* r) {	/* r_j = conj(a_j)	*/
+
+  { 
+      /* register */ vsip_length n = r->length;
+      vsip_stride cast = a->block->cstride;
+      vsip_stride crst = r->block->cstride;
+      vsip_scalar_f *apr = (vsip_scalar_f*) ((a->block->R->array) + cast * a->offset),
+                    *rpr = (vsip_scalar_f*) ((r->block->R->array) + crst * r->offset);
+      vsip_scalar_f *api = (vsip_scalar_f*) ((a->block->I->array) + cast * a->offset),
+                    *rpi = (vsip_scalar_f*) ((r->block->I->array) + crst * r->offset);
+      /* register */ vsip_stride ast = (cast * a->stride), 
+                                 rst = (crst * r->stride);
+
+      vsip_length i;
+#pragma omp parallel for
+      for(i=0;i<n;i++){
+        *(rpr + i*rst) = *(apr + i*ast);
+        *(rpi + i*rst) = - *(api + i*ast);
+      }
+
+  }
+}

@@ -7,7 +7,7 @@ CC=gcc
 INCLUDE=-I../include -I../../include/privateC
 DEFINEP=-DVSIP_PERFORMANCE_MODE
 DEFINED=-DVSIP_DEVELOPMENT_MODE
-OPTIONS=-O2 -Wall -ansi -pedantic
+OPTIONS=-O2 -Wall -ansi -pedantic -fopenmp
 AR=ar
 AR_OPTIONS=rcvs
 ARLIBP=libvsip_c.a
@@ -185,7 +185,17 @@ development:
 	(cd linalg/vsip_chold_f; make COMPILE='$(COMPILED)' AR='$(AR)' AR_OPTIONS='$(AR_OPTIONS)' ARLIB='$(ARLIBD)' arch)
 	(cd linalg/vsip_qrd_f; make COMPILE='$(COMPILED)' AR='$(AR)' AR_OPTIONS='$(AR_OPTIONS)' ARLIB='$(ARLIBD)' arch)
 	(cd linalg/vsip_spclslvrs_f; make COMPILE='$(COMPILED)' AR='$(AR)' AR_OPTIONS='$(AR_OPTIONS)' ARLIB='$(ARLIBD)' arch)
-       
+
+para:
+	(cd vector/vsip_vview_f; make COMPILE='$(COMPILEP)' AR='$(AR)' AR_OPTIONS='$(AR_OPTIONS)' ARLIB='$(ARLIBP)' obj_para)
+	(cd vector/vsip_vview_f; make COMPILE='$(COMPILEP)' AR='$(AR)' AR_OPTIONS='$(AR_OPTIONS)' ARLIB='$(ARLIBP)' arch_para)
+	(cd linalg/vsip_mview_f; make COMPILE='$(COMPILEP)' AR='$(AR)' AR_OPTIONS='$(AR_OPTIONS)' ARLIB='$(ARLIBP)' obj_para)
+	(cd linalg/vsip_mview_f; make COMPILE='$(COMPILEP)' AR='$(AR)' AR_OPTIONS='$(AR_OPTIONS)' ARLIB='$(ARLIBP)' arch_para)
+
+paraclean:
+	(cd vector/vsip_vview_f; make paraclean)
+	(cd linalg/vsip_mview_f; make paraclean)
+
 clean:
 	(cd scalar/vsip_cscalar_f; make clean) 
 	(cd scalar/vsip_CSCALARm_f; make clean) 

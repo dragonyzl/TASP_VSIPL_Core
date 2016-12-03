@@ -68,3 +68,62 @@ void (vsip_cvmmul_f)(
    }
    return;
 }
+
+void (vsip_cvmmul_f_para)(
+  const vsip_cvview_f *a,
+  const vsip_cmview_f *B,
+  vsip_major major,
+  const vsip_cmview_f *R) {
+   vsip_cvview_f bb,*b,rr,*r;
+   vsip_stride sb,sr;
+   vsip_length L;
+   if(major == VSIP_ROW){
+      sb = B->col_stride;
+      sr = R->col_stride;
+      L  = B->col_length;
+      b = VI_cmrowview_f(B,0,&bb);
+      r = VI_cmrowview_f(R,0,&rr);
+   } else {
+      sb = B->row_stride;
+      sr = R->row_stride;
+      L  = B->row_length;;
+      b = VI_cmcolview_f(B,0,&bb);
+      r = VI_cmcolview_f(R,0,&rr);
+   }
+
+vsip_length i,j;
+vsip_offset boffset = b->offset;
+vsip_offset roffset = r->offset;
+#pragma omp parallel for private(i, j)
+    for(i=0;i<L;i++){
+      { 
+          b->offset = boffset + i * sb;
+          r->offset = roffset + i * sr;
+          /*define variables*/
+          /* register */ vsip_length n = r->length;
+          vsip_stride cast = a->block->cstride;
+          vsip_stride cbst = b->block->cstride;
+          vsip_stride crst = r->block->cstride;
+          vsip_scalar_f *apr = (vsip_scalar_f *)((a->block->R->array) + cast * a->offset),
+                        *bpr = (vsip_scalar_f *)((b->block->R->array) + cbst * b->offset),
+                        *rpr = (vsip_scalar_f *)((r->block->R->array) + crst * r->offset);
+          vsip_scalar_f *api = (vsip_scalar_f *)((a->block->I->array) + cast * a->offset),
+                        *bpi = (vsip_scalar_f *)((b->block->I->array) + cbst * b->offset),
+                        *rpi = (vsip_scalar_f *)((r->block->I->array) + crst * r->offset);
+          vsip_scalar_f temp;
+          /* register */ vsip_stride ast = (cast * a->stride), 
+                                     bst = (cbst * b->stride), 
+                                     rst = (crst * r->stride);
+          for(j=0;j<n;j++){
+              temp = *apr * *bpr - *bpi * *api;
+              *rpi = *apr * *bpi + *api * *bpr;
+              *rpr = temp;
+              apr += ast; api += ast; 
+              bpr += bst; bpi += bst; 
+              rpr += rst; rpi += rst;
+          }
+      }  
+
+   }
+   return;
+}

@@ -25,3 +25,11 @@ void vsip_ccfftip_f(const vsip_fft_f *Offt,
      VI_ccfftip_f(fft,y);
 }
 
+void vsip_ccfftip_f_para(const vsip_fft_f *Offt, 
+                    const vsip_cvview_f *y)
+{
+     vsip_fft_f Nfft = *Offt;
+     vsip_fft_f *fft = &Nfft;
+     VI_ccfftip_f_para(fft,y);
+}
+
