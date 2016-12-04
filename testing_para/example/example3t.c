@@ -7,7 +7,7 @@
 
 #define M  42000
 #define N  42000
-#define P  5
+#define P  42000
 #define L  1
 #define alpha 2.0
 #define beta  3.5
@@ -17,6 +17,14 @@
 
 int main(){vsip_init((void*)0);
 {
+    printf("Test vsip_gemp_f_para\n");
+
+     int nthreads;
+ #pragma omp parallel
+   {
+     nthreads = omp_get_num_threads();
+   }
+       printf("Number of threads = %d\n", nthreads);
    void VU_mfill_f(vsip_mview_f*, vsip_scalar_f);
    vsip_mview_f *A = vsip_mcreate_f(M,N,VSIP_ROW,0),
                 *B = vsip_mcreate_f(P,M,VSIP_ROW,0),
@@ -37,11 +45,9 @@ int main(){vsip_init((void*)0);
       vsip_mat_op OpA = VSIP_MAT_TRANS;
       vsip_mat_op OpB = VSIP_MAT_TRANS;
 
-
       /*printf("OpA %i\n",OpA);*/
       
       printf("matrix size: %d*%d, calc %d times\n",M,N,L);
-
       clock_t start_t = clock();
       double wall_timer_start = omp_get_wtime();
       for(i=0; i<L; i++){
@@ -49,7 +55,7 @@ int main(){vsip_init((void*)0);
       }
       clock_t end_t = clock();
       double wall_timer_end = omp_get_wtime();
-      printf("before para CPU total clock(): %f\nwall time omp_get_wtime():%f\n", (double)(end_t - start_t) / CLOCKS_PER_SEC,wall_timer_end-wall_timer_start);
+      printf("before para CPU total clock(): %f\nwall time omp_get_wtime():%f\n\n", (double)(end_t - start_t) / CLOCKS_PER_SEC,wall_timer_end-wall_timer_start);
 
       start_t = clock();
       wall_timer_start = omp_get_wtime();
@@ -58,7 +64,7 @@ int main(){vsip_init((void*)0);
       }
       end_t = clock();
       wall_timer_end = omp_get_wtime();
-      printf("after para CPU total clock(): %f\nwall time omp_get_wtime():%f\n", (double)(end_t - start_t) / CLOCKS_PER_SEC,wall_timer_end-wall_timer_start);
+      printf("after para CPU total clock(): %f\nwall time omp_get_wtime():%f\nNUM_THREADS = %d\n\n", (double)(end_t - start_t) / CLOCKS_PER_SEC,wall_timer_end-wall_timer_start,nthreads);
 
    }
    vsip_malldestroy_f(A);

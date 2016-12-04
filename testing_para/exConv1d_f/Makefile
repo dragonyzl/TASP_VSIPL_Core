@@ -11,9 +11,20 @@ librariesD=-lVU_c -lDvsip_c -lm
 COMPILEP=$(CC) $(INCLUDE) $(LIBRARY) $(DEFINEP) $(OPTIONS)
 COMPILED=$(CC) $(INCLUDE) $(LIBRARY) $(DEFINED) $(OPTIONS)
 
+test: test1 test2 test3
+
 conv1dEx:	conv1dEx.c
 	$(COMPILEP) -o conv1dEx conv1dEx.c $(librariesP)
 	$(COMPILEP) -o conv1dEx_para conv1dEx_para.c $(librariesP)
+
+test1:	test1.c
+	$(COMPILEP) -o test1 test1.c $(librariesP)
+
+test2:	test2.c
+	$(COMPILEP) -o test2 test2.c $(librariesP)
+
+test3:	test3.c
+	$(COMPILEP) -o test3 test3.c $(librariesP)
 
 para:	conv1dEx_para.c
 	$(COMPILEP) -o conv1dEx_para conv1dEx_para.c $(librariesP)
