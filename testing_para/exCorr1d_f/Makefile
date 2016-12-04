@@ -12,6 +12,16 @@ COMPILEP=$(CC) $(INCLUDE) $(LIBRARY) $(DEFINEP) $(OPTIONS)
 COMPILED=$(CC) $(INCLUDE) $(LIBRARY) $(DEFINED) $(OPTIONS)
 
 all:	corr1dEx ccorr1dEx cpara ccpara
+test: test1 test2 test3
+
+test1:	test1.c
+	$(COMPILEP) -o test1 test1.c $(librariesP)
+
+test2:	test2.c
+	$(COMPILEP) -o test2 test2.c $(librariesP)
+
+test3:	test3.c
+	$(COMPILEP) -o test3 test3.c $(librariesP)
 
 corr1dEx:	corr1dEx.c
 	$(COMPILEP) -o corr1dEx corr1dEx.c $(librariesP)
