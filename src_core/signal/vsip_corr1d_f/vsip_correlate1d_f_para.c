@@ -113,7 +113,7 @@ vsip_scalar_f *ypinit=yp;
 
 #pragma omp parallel for
       for(i=0;i<(n-s1);i++){
-        *(ypinit+(vsip_stride)(i)*yst) = *(xpinit+(vsip_stride)(i)*xst) / (vsip_scalar_f)(scale1+i);
+        *(ypinit+i*yst) = *(xpinit+i*xst) / (vsip_scalar_f)(scale1+i);
       }
 
 scale1+=(vsip_scalar_f)(n-s1);
@@ -166,7 +166,7 @@ vsip_length i;
 vsip_scalar_f *xpinit=xp;
 vsip_scalar_f *ypinit=yp;
 
-#pragma omp parallel for schedule(dynamic)
+#pragma omp parallel for
       for(i=0;i<(n-s1);i++){
         *(ypinit+i*yst) = *(xpinit+i*xst) / (vsip_scalar_f)(scale1+i);
       }
@@ -177,9 +177,9 @@ if(n>s1){
     n=s1;
 }
 
-#pragma omp parallel for schedule(dynamic)
+#pragma omp parallel for
       for(i=0;i<(n-s2);i++){
-        *(ypinit+(i+1)*yst) = *(xpinit+(i+1)*xst) * (scale2);
+        *(ypinit+i*yst) = *(xpinit+i*xst) * (scale2);
       }
 
 
@@ -191,7 +191,7 @@ if(n-s2>0){
 
 scale1 -= 1.0;
 
-#pragma omp parallel for schedule(dynamic)
+#pragma omp parallel for
       for(i=0;i<n;i++){
         *(ypinit+(i)*yst) = *(xpinit+(i)*xst) /  (vsip_scalar_f)(scale1-i);
       }

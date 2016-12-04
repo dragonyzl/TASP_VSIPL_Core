@@ -320,7 +320,7 @@ vsip_offset xroffset = XR->offset;
 vsip_offset xioffset = XI->offset;
 
 int idx;
-#pragma omp parallel for reduction(+:xioffset,xroffset,xtoffset,xtlength)
+#pragma omp parallel for reduction(+:xioffset,xroffset,xtoffset)
         for(idx=0;idx<1;idx++){
             if(L>0){
                 idx = -1;
@@ -332,7 +332,6 @@ int idx;
                     xtlength++;
                 }
                 if(L > xtlength){
-#pragma opm atomic
                       L -= xtlength;
                 }else{
                       xtlength = L;
@@ -422,7 +421,7 @@ vsip_offset xroffset = XR->offset;
 vsip_offset xioffset = XI->offset;
 
 int idx;
-#pragma omp parallel for reduction(+:xioffset,xroffset,xtoffset,xtlength)
+#pragma omp parallel for reduction(+:xioffset,xroffset,xtoffset)
         for(idx=0;idx<1;idx++){
             if(L>0){
                 idx = -1;
@@ -434,7 +433,6 @@ int idx;
                     xtlength++;
                 }
                 if(L > xtlength){
-#pragma opm atomic
                       L -= xtlength;
                 }else{
                       xtlength = L;
@@ -522,7 +520,7 @@ vsip_offset xroffset = XR->offset;
 vsip_offset xioffset = XI->offset;
 
 int idx;
-#pragma omp parallel for reduction(+:xioffset,xroffset,xtoffset,xtlength)
+#pragma omp parallel for reduction(+:xioffset,xroffset,xtoffset)
         for(idx=0;idx<1;idx++){
             if(L>0){
                 idx = -1;
@@ -534,7 +532,6 @@ int idx;
                     xtlength++;
                 }
                 if(L > xtlength){
-#pragma opm atomic
                       L -= xtlength;
                 }else{
                       xtlength = L;
