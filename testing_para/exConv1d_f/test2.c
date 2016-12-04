@@ -69,10 +69,6 @@ int i;
        clock_t start_t = clock();
        for(i=0;i<L;i++){
             vsip_convolve1d_f(conv2,x2,y2);
-            vsip_valldestroy_f(y2);
-            y2 = vsip_vcreate_f(Yl,0),
-            vsip_conv1d_destroy_f(conv2);
-            conv2 = vsip_conv1d_create_f(h2,sym,Nl,Ds,VSIP_SUPPORT_SAME,0,0);
        }
       double wall_timer_end = omp_get_wtime();
        clock_t end_t = clock();
@@ -88,13 +84,9 @@ int i;
 
        wall_timer_start = omp_get_wtime();
         start_t = clock();
- #pragma omp parallel for
+ #pragma omp parallel for 
        for(i=0;i<L;i++){
       vsip_convolve1d_f(conv,x,y);
-      vsip_valldestroy_f(y);
-      y = vsip_vcreate_f(Yl,0),
-      vsip_conv1d_destroy_f(conv);
-      conv = vsip_conv1d_create_f(h,sym,Nl,Ds,VSIP_SUPPORT_SAME,0,0);
        }
        wall_timer_end = omp_get_wtime();
         end_t = clock();

@@ -138,7 +138,7 @@ void vsip_convolve1d_f_para(
            XTinc = Xm->col_stride;
            XT = XR;
 
-/*
+
            while(L > 0){
               vsip_vcopy_f_f_para(X,XT);
               X->offset += Xinc;
@@ -160,8 +160,7 @@ void vsip_convolve1d_f_para(
               i++;
            }
 
-*/
-/******************************BEGIN***********************************/
+/******************************BEGIN***********************************
 vsip_offset xoffset = X->offset;
 vsip_offset xroffset = XR->offset;
 vsip_offset xioffset = XI->offset;
@@ -190,7 +189,7 @@ unsigned int itertimes;
                 L = XT->length  % L;
             }
             i=itertimes;
-         /*the last one iteration*/
+
               vsip_vcopy_f_f_para(X,XT);
               X->offset = xoffset + i * Xinc;
               if(i%2) { 
@@ -200,7 +199,7 @@ unsigned int itertimes;
                    XT = XR;
                    XI->offset = xioffset + (vsip_offset)(i/2) * XTinc;
               }
-              /*else section in original loop*/
+
               XT->length = L;
               X->length = L;
               vsip_vcopy_f_f_para(X,XT);
@@ -274,7 +273,7 @@ unsigned int itertimes;
              XT->offset = conv->nh / 2;
              XT->length -= XT->offset;
 
- /********Original************    
+
              while(L > 0){
                 vsip_offset o = XT->length % XT->stride;
                 XT->length /= XT->stride;
@@ -305,13 +304,7 @@ unsigned int itertimes;
                 i++;
              }
 
-           size_t jjj;
-           for (jjj = 0; jjj < 1; )
-           {
-                printf("i=%d, xtlen=%ld, L=%ld ",i,XT->length,L);
-           }
-*/
-/******************************BEGIN***********************************/
+/******************************BEGIN***********************************
 
 vsip_length xtlength = XT->length;
 vsip_offset ytoffset = yt->offset;
@@ -381,7 +374,6 @@ XR->offset = xroffset;
              XT->offset = conv->nh - 1;
              XT->length -= XT->offset;
 
-/******Original*****
              while(L > 0){
                 vsip_offset o = XT->length % XT->stride;
                 XT->length /= XT->stride;
@@ -411,9 +403,9 @@ XR->offset = xroffset;
                 }
                 i++; 
              }  
-*/
 
-/*******************************BEGIN**********************************/
+
+/*******************************BEGIN**********************************
 vsip_length xtlength = XT->length;
 vsip_offset ytoffset = yt->offset;
 vsip_offset xtoffset = XT->offset;
@@ -479,8 +471,6 @@ XR->offset = xroffset;
              vsip_vview_f yyt = *y;   
              vsip_vview_f *yt = &yyt; 
 
-
-/*********Original************
              while(L > 0){ 
                 vsip_offset o = XT->length % XT->stride; 
                 XT->length /= XT->stride;
@@ -510,9 +500,9 @@ XR->offset = xroffset;
                 } 
                 i++;  
              }   
-*/
 
-/********************************BEGIN*********************************/
+
+/********************************BEGIN********************************
 vsip_length xtlength = XT->length;
 vsip_offset ytoffset = yt->offset;
 vsip_offset xtoffset = XT->offset;
