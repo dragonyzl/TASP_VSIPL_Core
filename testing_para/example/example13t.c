@@ -44,7 +44,7 @@ int i;
       clock_t start_t = clock();
       double wall_timer_start = omp_get_wtime();
       for(i=0; i<L; i++){
-         double sqsumpara = vsip_vdot_f(A,B,C);
+         vsip_vmul_f(A,B,C);
       }
       clock_t end_t = clock();
       double wall_timer_end = omp_get_wtime();
@@ -53,7 +53,7 @@ int i;
       start_t = clock();
       wall_timer_start = omp_get_wtime();
       for(i=0; i<L; i++){
-          double sqsumpara = vsip_vdot_f_para(A,B,C);
+          vsip_vmul_f_para(A,B,C);
       }
       end_t = clock();
       wall_timer_end = omp_get_wtime();
