@@ -138,7 +138,7 @@ void vsip_convolve1d_f_para(
            XTinc = Xm->col_stride;
            XT = XR;
 
-
+/*
            while(L > 0){
               vsip_vcopy_f_f(X,XT);
               X->offset += Xinc;
@@ -159,8 +159,8 @@ void vsip_convolve1d_f_para(
               }
               i++;
            }
-
-/******************************BEGIN***********************************
+*/
+/******************************BEGIN***********************************/
 vsip_offset xoffset = X->offset;
 vsip_offset xroffset = XR->offset;
 vsip_offset xioffset = XI->offset;
