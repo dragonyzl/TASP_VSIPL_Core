@@ -25,8 +25,8 @@ void vsip_convolve1d_f_para(
      /* make sure work area starts full of zeros */
      vsip_cvfill_f(vsip_cmplx_f(0,0),conv->x);
      /* copy input vector into work area */
-     xt->length = xtn2; vsip_vcopy_f_f(xt,xr);
-     xt->offset = xtn2; xt->length = x->length - xtn2; vsip_vcopy_f_f(xt,xi);
+     xt->length = xtn2; vsip_vcopy_f_f_para(xt,xr);
+     xt->offset = xtn2; xt->length = x->length - xtn2; vsip_vcopy_f_f_para(xt,xi);
      /* do the fft on the input data */
      /**************************************************/
      vsip_ccfftip_f_para(conv->fft,conv->x);
@@ -190,7 +190,7 @@ unsigned int itertimes;
             }
             i=itertimes;
 
-              vsip_vcopy_f_f(X,XT);
+              vsip_vcopy_f_f_para(X,XT);
               X->offset = xoffset + i * Xinc;
               if(i%2) { 
                    XT = XI;

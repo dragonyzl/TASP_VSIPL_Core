@@ -1,52 +1,49 @@
+
+OpenMP parallelization by Sizhang Dai
+sizhang@gwu.edu
+
 How to compile
+use "make".
 
-To make a performance version use "make".
-To make a development version use "make development"
+All the files or functions' names with '_para' suffix are paralleized using OpenMP
 
-NOTE:
-If you want to make both versions be sure to do a make clean between them.
-My makefile does not recognize what version .o files are available, and if
-they are already there it will use the previous make versions for the
-new library.
+The 'testing_para' folder contains testing code for corretness and porformance
 
-Note that I have concentrated on the performance version, and the 
-development version is only what I inherited from the December 97
-Reference version. I have tried to keep up what is there, but have not
-done true development mode for any new code. With all the changes, I am
-not sure how much good development mode is right now. 
 
-If you have not had any troubles you should be able to go to the
-CoreExamples directory and make a couple of examples to see how things
-work. If your having trouble let me know.
 
-The performance library is
-libvsip_c
+solvers:
+convolve1d_f: 
+            vsip_convolve1d_f_para()
+        inlcuding sub-functions the will be used in the vsip_convolve1d_f_para():
+                vsip_vadd_f_para
+                vsip_vcopy_f_f_para
+                vsip_cvcopy_f_f_para
+                vsip_cvconj_f_para
+                vsip_rscvmul_f_para
+                vsip_svmul_f_para
+                vsip_cvmul_f_para
+                VI_sort_copy_f_para
+                VI_dft_f_para
+                VI_ccfftip_f_para
+                VI_ccfftmip_f_para
+                vsip_ccfftip_f_para
+                vsip_ccfftmip_f_para
+                vsip_cvmmul_f_para
+                VI_sortm_copy_f_para
 
-The development library is
-libDvsip_c
 
-libVU_c are some utility functions to help with printing and reading data
-files. They are vsip user code (VU) and should run with any implementation
-assuming the system supports a printf function.  Include VU.h to use. You need
-this library to run many of the examples. It should be made with everything else
-if you make from the top level VSIPL directory.
+correlate1d_f: 
+                vsip_correlate1d_f_para()  for real number
+            &&  vsip_ccorrelate1d_f_para() for complex number
 
-A new directory from the last release is the testing directory. This is a bunch
-of test routines designed to at least give you a good feeling that the library works
-for most stuff. The library should be generic for any ANSI C platform, but I have found
-some strange bugs that sometimes don't show up on every platform. So it is a good idea to
-run the test once to see if any 'error's show up.
-Read readmes internal to the testing routines for more information.  Everything is not 
-tested yet. Maybe someday.
 
-The manual is not current, and does not have final changes made to the final
-specification. See VSIPL documents on web for more complete descriptions. I will
-update my manual as time permits.
+matrix functions:
+            vsip_gems_f_para, 
+            vsip_gemp_f_para,
 
-For a (public) header file use vsip.h
 
-                  Randy Judd
-                  judd@spawar.navy.mil
-                  619 553 3086
-
-Randall Judd is a US government employee. This work has been released to the Public with Distribution A.
+vector functions:
+            vsip_vsumval_f_para, 
+            vsip_vsumsqval_f_para, 
+            vsip_vdot_f_para, 
+            vsip_vmul_f_para,

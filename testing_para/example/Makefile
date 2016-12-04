@@ -1,7 +1,5 @@
-all : example1 example1t example2 example2t example3 example3t example31t example11t example12t example13t
+all : example1t example11t example12t example13t example3t example31t 
 
-example1:	example1.c
-	gcc -fopenmp -o example1 example1.c -L../../lib -I../../include -lvsip_c
 
 example11t:	example11t.c
 	gcc -fopenmp -o example11t example11t.c -L../../lib -I../../include -lvsip_c
@@ -11,15 +9,6 @@ example13t:	example13t.c
 	gcc -fopenmp -o example13t example13t.c -L../../lib -I../../include -lvsip_c
 example1t:	example1t.c
 	gcc -fopenmp -o example1t example1t.c -L../../lib -I../../include -lvsip_c
-example2:	example2.c
-	gcc -I../../include -L../../lib -DVSIP_PERFORMANCE_MODE \
-	-O2 -Wall -ansi -pedantic -fopenmp -o example2 example2.c -lvsip_c -lm
-example2t:	example2t.c
-	gcc -I../../include -L../../lib -DVSIP_PERFORMANCE_MODE \
-	-O2 -Wall -ansi -pedantic -fopenmp -o example2t example2t.c -lvsip_c -lm
-example3:	example3.c
-	gcc -I../../include -L../../lib -DVSIP_PERFORMANCE_MODE \
-	-O2 -Wall -ansi -pedantic -fopenmp -o example3 example3.c -lvsip_c -lm
 example3t:	example3t.c
 	gcc -I../../include -L../../lib -DVSIP_PERFORMANCE_MODE \
 	-O2 -Wall -ansi -pedantic -fopenmp -o example3t example3t.c -lvsip_c -lm
@@ -28,9 +17,9 @@ example3t:	example31t.c
 	-O2 -Wall -ansi -pedantic -fopenmp -o example31t example31t.c -lvsip_c -lm
 
 clean:	
-	rm -f example1 *.exe
 	rm -f example1t *.exe
-	rm -f example2 *.exe
-	rm -f example2t *.exe
-	rm -f example3 *.exe
+	rm -f example11t *.exe
+	rm -f example12t *.exe
+	rm -f example13t *.exe
 	rm -f example3t *.exe
+	rm -f example31t *.exe
