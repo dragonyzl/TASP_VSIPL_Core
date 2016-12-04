@@ -73,7 +73,7 @@ case 2:
         double wall_timer_end = omp_get_wtime();
        clock_t end_t = clock();
         printf("before para CPU total clock(): %f\nwall time omp_get_wtime():%f\n\n", (double)(end_t - start_t) / CLOCKS_PER_SEC,wall_timer_end-wall_timer_start); 
-        vsip_corr1d_destroy_f(cor2)
+        vsip_corr1d_destroy_f(cor2);
 
         cor = vsip_corr1d_create_f(Mval,Nval,VSIP_SUPPORT_FULL,0,0);
         start_t = clock();

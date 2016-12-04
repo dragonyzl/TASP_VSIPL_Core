@@ -73,7 +73,7 @@ case 2:
         double wall_timer_end = omp_get_wtime();
        clock_t end_t = clock();
         printf("before para CPU total clock(): %f\nwall time omp_get_wtime():%f\n\n", (double)(end_t - start_t) / CLOCKS_PER_SEC,wall_timer_end-wall_timer_start); 
-        vsip_corr1d_destroy_f(cor2)
+        vsip_corr1d_destroy_f(cor2);
 
         cor = vsip_corr1d_create_f(Mval,Nval,VSIP_SUPPORT_FULL,0,0);
         start_t = clock();
@@ -115,7 +115,7 @@ case 6:
         vsip_vputlength_f(y2,Nval-Mval+1);
         clock_t start_t = clock();
         double wall_timer_start = omp_get_wtime();
-        vsip_correlate1d_f_para(cor2,VSIP_UNBIASED,h2,x2,y2);
+        vsip_correlate1d_f(cor2,VSIP_UNBIASED,h2,x2,y2);
         double wall_timer_end = omp_get_wtime();
         clock_t end_t = clock();
         printf("before para CPU total clock(): %f\nwall time omp_get_wtime():%f\n\n", (double)(end_t - start_t) / CLOCKS_PER_SEC,wall_timer_end-wall_timer_start);         
