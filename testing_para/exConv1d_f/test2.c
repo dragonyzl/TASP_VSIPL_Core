@@ -64,7 +64,7 @@ printf("vsip_convolve1d_f_para Test2: VSIP_SUPPORT_SAME\n");
       { vsip_length length2 = (Nl - 1)/Ds + 1;
         vsip_vputlength_f(y2,length2);
       }
-
+int i;
       double wall_timer_start = omp_get_wtime();
        clock_t start_t = clock();
        for(i=0;i<L;i++){
