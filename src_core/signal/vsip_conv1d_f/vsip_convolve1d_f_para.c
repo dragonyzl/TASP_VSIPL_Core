@@ -172,7 +172,7 @@ unsigned int itertimes;
               else itertimes=(unsigned int)(L / (XT->length));
               if(L % XT->length == 0) itertimes--;
               itertimes+=i;
-#pragma omp parallel for schedule(dynamic)
+#pragma omp parallel for
         for(i=1;i<itertimes;i++){
               vsip_vcopy_f_f_para(X,XT);
               X->offset = xoffset + i * Xinc;
@@ -320,9 +320,8 @@ vsip_offset xroffset = XR->offset;
 vsip_offset xioffset = XI->offset;
 
 int idx;
-#pragma omp parallel for shared(xtlength) reduction(+:xioffset,xroffset,xtoffset)
+#pragma omp parallel for reduction(+:xioffset,xroffset,xtoffset,xtlength)
             for(idx=0;idx<1;idx++){
-#pragma omp critical (xtlength)
   {
             if(L>0){
                 idx = -1;
@@ -340,6 +339,7 @@ int idx;
                       xtlength = L;
                       L = 0;
                 }
+            }
                 yt->length = xtlength;
                 XT->length = xtlength;
                 XT->offset = xtoffset;
@@ -366,7 +366,7 @@ int idx;
                 }
                 i++;
             }  
-            }
+}
   }
 
 XT->length = xtlength;
@@ -424,9 +424,8 @@ vsip_offset xroffset = XR->offset;
 vsip_offset xioffset = XI->offset;
 
 int idx;
-#pragma omp parallel for schedule(dynamic) shared(xtlength) reduction(+:xioffset,xroffset,xtoffset)
+#pragma omp parallel for reduction(+:xioffset,xroffset,xtoffset,xtlength)
             for(idx=0;idx<1;idx++){
-#pragma omp critical (xtlength)
   {
             if(L>0){
                 idx = -1;
@@ -444,6 +443,7 @@ int idx;
                       xtlength = L;
                       L = 0;
                 }
+            }
                 yt->length = xtlength;
                 XT->length = xtlength;
                 XT->offset = xtoffset;
@@ -470,7 +470,7 @@ int idx;
                 }
                 i++;
             }  
-            }
+}
   }
 
 XT->length = xtlength;
@@ -526,9 +526,8 @@ vsip_offset xroffset = XR->offset;
 vsip_offset xioffset = XI->offset;
 
 int idx;
-#pragma omp parallel for schedule(dynamic) shared(xtlength) reduction(+:xioffset,xroffset,xtoffset)
+#pragma omp parallel for reduction(+:xioffset,xroffset,xtoffset,xtlength)
             for(idx=0;idx<1;idx++){
-#pragma omp critical (xtlength)
   {
             if(L>0){
                 idx = -1;
@@ -546,6 +545,7 @@ int idx;
                       xtlength = L;
                       L = 0;
                 }
+            }
                 yt->length = xtlength;
                 XT->length = xtlength;
                 XT->offset = xtoffset;
@@ -572,7 +572,7 @@ int idx;
                 }
                 i++;
             }  
-            }
+}
   }
 
 XT->length = xtlength;

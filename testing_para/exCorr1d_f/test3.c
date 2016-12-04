@@ -60,7 +60,7 @@ printf("N = %d, M = %d\n", Nval, Mval);
    vsip_vsin_f(x,x);
    vsip_vsin_f(x2,x2);
 
-mode = 3;
+mode = 6;
 
 switch (mode)
 {
