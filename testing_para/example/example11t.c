@@ -18,7 +18,7 @@
 #include <omp.h>
 #include <time.h>
 
-#define N  1000000000
+#define N  10000000
 #define L  5
 
 int main(){vsip_init((void*)0);
@@ -38,12 +38,12 @@ int main(){vsip_init((void*)0);
    vsip_vramp_f(0,1,A);
 
    vsip_vfill_f(2.5,B);
-   
+
 int i;
       clock_t start_t = clock();
       double wall_timer_start = omp_get_wtime();
       for(i=0; i<L; i++){
-         sqsumpara = vsip_vsumval_f(A);
+         double sqsumpara = vsip_vsumval_f(A);
       }
       clock_t end_t = clock();
       double wall_timer_end = omp_get_wtime();
@@ -53,7 +53,7 @@ int i;
       wall_timer_start = omp_get_wtime();
 #pragma omp parallel for
       for(i=0; i<L; i++){
-          sqsumpara = vsip_vsumval_f_para(A);
+          double sqsumpara = vsip_vsumval_f_para(A);
       }
       end_t = clock();
       wall_timer_end = omp_get_wtime();
