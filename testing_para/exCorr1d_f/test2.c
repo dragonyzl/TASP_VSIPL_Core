@@ -22,8 +22,8 @@
 
 #define f0 25
 #define fs 128
-#define Nval 750000
-#define Mval 500000
+#define Nval 75000000
+#define Mval 50000000
 
 int main(){vsip_init((void*)0);
 {
