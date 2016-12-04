@@ -313,8 +313,10 @@ vsip_offset xroffset = XR->offset;
 vsip_offset xioffset = XI->offset;
 
 int idx;
-#pragma omp parallel for reduction(+:xioffset,xroffset,xtoffset)
-        for(idx=0;idx<1;idx++){
+#pragma omp parallel for shared(xtlength) reduction(+:xioffset,xroffset,xtoffset)
+            for(idx=0;idx<1;idx++){
+#pragma omp critical (xtlength)
+  {
             if(L>0){
                 idx = -1;
                 vsip_offset o = xtlength % XT->stride;
@@ -325,6 +327,7 @@ int idx;
                     xtlength++;
                 }
                 if(L > xtlength){
+#pragma opm atomic
                       L -= xtlength;
                 }else{
                       xtlength = L;
@@ -334,7 +337,7 @@ int idx;
                 XT->length = xtlength;
                 XT->offset = xtoffset;
                 yt->offset = ytoffset;
-                vsip_vcopy_f_f(XT,yt);
+                vsip_vcopy_f_f_para(XT,yt);
 
                 ytoffset += (yt->length * yt->stride);
                 if(i%2){
@@ -354,17 +357,16 @@ int idx;
                     xtoffset += o;
                     xtlength -= o;
                 }
-            }
                 i++;
-        }  
-  
+            }  
+            }
+  }
 
 XT->length = xtlength;
 XT->offset = xtoffset;
 yt->offset = ytoffset;
 XI->offset = xioffset;
 XR->offset = xroffset;
-    
 /******************************END***********************************/
 
           }
@@ -406,6 +408,7 @@ XR->offset = xroffset;
 */
 
 /*******************************BEGIN**********************************/
+
 vsip_length xtlength = XT->length;
 vsip_offset ytoffset = yt->offset;
 vsip_offset xtoffset = XT->offset;
@@ -413,8 +416,10 @@ vsip_offset xroffset = XR->offset;
 vsip_offset xioffset = XI->offset;
 
 int idx;
-#pragma omp parallel for reduction(+:xioffset,xroffset,xtoffset)
-        for(idx=0;idx<1;idx++){
+#pragma omp parallel for shared(xtlength) reduction(+:xioffset,xroffset,xtoffset)
+            for(idx=0;idx<1;idx++){
+#pragma omp critical (xtlength)
+  {
             if(L>0){
                 idx = -1;
                 vsip_offset o = xtlength % XT->stride;
@@ -425,6 +430,7 @@ int idx;
                     xtlength++;
                 }
                 if(L > xtlength){
+#pragma opm atomic
                       L -= xtlength;
                 }else{
                       xtlength = L;
@@ -434,7 +440,7 @@ int idx;
                 XT->length = xtlength;
                 XT->offset = xtoffset;
                 yt->offset = ytoffset;
-                vsip_vcopy_f_f(XT,yt);
+                vsip_vcopy_f_f_para(XT,yt);
 
                 ytoffset += (yt->length * yt->stride);
                 if(i%2){
@@ -454,10 +460,10 @@ int idx;
                     xtoffset += o;
                     xtlength -= o;
                 }
-            }
                 i++;
-        }  
-  
+            }  
+            }
+  }
 
 XT->length = xtlength;
 XT->offset = xtoffset;
@@ -504,6 +510,7 @@ XR->offset = xroffset;
 */
 
 /********************************BEGIN********************************/
+
 vsip_length xtlength = XT->length;
 vsip_offset ytoffset = yt->offset;
 vsip_offset xtoffset = XT->offset;
@@ -511,8 +518,10 @@ vsip_offset xroffset = XR->offset;
 vsip_offset xioffset = XI->offset;
 
 int idx;
-#pragma omp parallel for reduction(+:xioffset,xroffset,xtoffset)
-        for(idx=0;idx<1;idx++){
+#pragma omp parallel for shared(xtlength) reduction(+:xioffset,xroffset,xtoffset)
+            for(idx=0;idx<1;idx++){
+#pragma omp critical (xtlength)
+  {
             if(L>0){
                 idx = -1;
                 vsip_offset o = xtlength % XT->stride;
@@ -523,6 +532,7 @@ int idx;
                     xtlength++;
                 }
                 if(L > xtlength){
+#pragma opm atomic
                       L -= xtlength;
                 }else{
                       xtlength = L;
@@ -532,7 +542,7 @@ int idx;
                 XT->length = xtlength;
                 XT->offset = xtoffset;
                 yt->offset = ytoffset;
-                vsip_vcopy_f_f(XT,yt);
+                vsip_vcopy_f_f_para(XT,yt);
 
                 ytoffset += (yt->length * yt->stride);
                 if(i%2){
@@ -552,10 +562,10 @@ int idx;
                     xtoffset += o;
                     xtlength -= o;
                 }
-            }
                 i++;
-        }  
-  
+            }  
+            }
+  }
 
 XT->length = xtlength;
 XT->offset = xtoffset;
