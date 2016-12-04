@@ -29,14 +29,14 @@ void vsip_convolve1d_f_para(
      xt->offset = xtn2; xt->length = x->length - xtn2; vsip_vcopy_f_f_para(xt,xi);
      /* do the fft on the input data */
      /**************************************************/
-     vsip_ccfftip_f_para(conv->fft,conv->x);
+     vsip_ccfftip_f(conv->fft,conv->x);
      /* multiply time filter in frequency domain */
      vsip_cvmul_f_para(conv->H,conv->x,conv->x);
      /* do invers fft using forward fft */
      vsip_cvconj_f_para(conv->x,conv->x);
      vsip_rscvmul_f_para((vsip_scalar_f)1.0/(vsip_scalar_f)conv->x->length,conv->x,conv->x);
      /**************************************************/
-     vsip_ccfftip_f_para(conv->fft,conv->x);
+     vsip_ccfftip_f(conv->fft,conv->x);
      vsip_cvconj_f_para(conv->x,conv->x);
      /* do overlap add of real with complex */
      xr->offset = xtn2; 
