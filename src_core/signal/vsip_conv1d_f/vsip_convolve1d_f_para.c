@@ -273,7 +273,7 @@ unsigned int itertimes;
              XT->offset = conv->nh / 2;
              XT->length -= XT->offset;
 
-
+/*
              while(L > 0){
                 vsip_offset o = XT->length % XT->stride;
                 XT->length /= XT->stride;
@@ -303,8 +303,8 @@ unsigned int itertimes;
                 }
                 i++;
              }
-
-/******************************BEGIN***********************************
+*/
+/******************************BEGIN***********************************/
 
 vsip_length xtlength = XT->length;
 vsip_offset ytoffset = yt->offset;
@@ -373,7 +373,7 @@ XR->offset = xroffset;
              vsip_vview_f *yt = &yyt;
              XT->offset = conv->nh - 1;
              XT->length -= XT->offset;
-
+/*
              while(L > 0){
                 vsip_offset o = XT->length % XT->stride;
                 XT->length /= XT->stride;
@@ -403,9 +403,9 @@ XR->offset = xroffset;
                 }
                 i++; 
              }  
+*/
 
-
-/*******************************BEGIN**********************************
+/*******************************BEGIN**********************************/
 vsip_length xtlength = XT->length;
 vsip_offset ytoffset = yt->offset;
 vsip_offset xtoffset = XT->offset;
@@ -471,6 +471,7 @@ XR->offset = xroffset;
              vsip_vview_f yyt = *y;   
              vsip_vview_f *yt = &yyt; 
 
+/*
              while(L > 0){ 
                 vsip_offset o = XT->length % XT->stride; 
                 XT->length /= XT->stride;
@@ -500,9 +501,9 @@ XR->offset = xroffset;
                 } 
                 i++;  
              }   
+*/
 
-
-/********************************BEGIN********************************
+/********************************BEGIN********************************/
 vsip_length xtlength = XT->length;
 vsip_offset ytoffset = yt->offset;
 vsip_offset xtoffset = XT->offset;
