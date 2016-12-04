@@ -19,9 +19,9 @@
 #define f0 2
 #define fs 10000
 #define Ds 3
-#define L  10
-#define Nl 42000
-#define Ml 420
+#define L  1
+#define Nl 420000
+#define Ml 4200
 
 int main(){vsip_init((void*)0);
 {
@@ -84,7 +84,6 @@ int i;
 
        wall_timer_start = omp_get_wtime();
         start_t = clock();
- #pragma omp parallel for 
        for(i=0;i<L;i++){
       vsip_convolve1d_f(conv,x,y);
        }
