@@ -7,7 +7,7 @@
 
 #define M  42000
 #define N  42000
-#define P  42000
+#define P  3
 #define L  1
 #define alpha 2.0
 #define beta  3.5

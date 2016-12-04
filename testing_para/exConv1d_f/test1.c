@@ -20,7 +20,7 @@
 #define fs 10000
 #define Ds 3
 #define Nl 42000000
-#define Ml 4200000
+#define Ml 420
 
 int main(){vsip_init((void*)0);
 {

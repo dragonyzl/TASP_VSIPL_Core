@@ -23,7 +23,7 @@
 
 int main(){vsip_init((void*)0);
 {
-    printf("Test vsip_vsumsqval_f_para\n");
+    printf("Test vsip_vsumval_f_para\n");
      int nthreads;
  #pragma omp parallel
    {
@@ -53,7 +53,7 @@ int i;
       clock_t start_t = clock();
       double wall_timer_start = omp_get_wtime();
       for(i=0; i<L; i++){
-         sqsumpara = vsip_vsumsqval_f(A);
+         sqsumpara = vsip_vsumval_f(A);
       }
       clock_t end_t = clock();
       double wall_timer_end = omp_get_wtime();
@@ -63,7 +63,7 @@ int i;
       wall_timer_start = omp_get_wtime();
 #pragma omp parallel for
       for(i=0; i<L; i++){
-          sqsumpara = vsip_vsumsqval_f_para(A);
+          sqsumpara = vsip_vsumval_f_para(A);
       }
       end_t = clock();
       wall_timer_end = omp_get_wtime();

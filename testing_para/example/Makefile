@@ -1,7 +1,14 @@
-all : example1 example1t example2 example2t example3 example3t
+all : example1 example1t example2 example2t example3 example3t example11t example12t example13t
 
 example1:	example1.c
 	gcc -fopenmp -o example1 example1.c -L../../lib -I../../include -lvsip_c
+
+example11t:	example11t.c
+	gcc -fopenmp -o example11t example11t.c -L../../lib -I../../include -lvsip_c
+example12t:	example12t.c
+	gcc -fopenmp -o example12t example12t.c -L../../lib -I../../include -lvsip_c
+example13t:	example13t.c
+	gcc -fopenmp -o example13t example13t.c -L../../lib -I../../include -lvsip_c
 example1t:	example1t.c
 	gcc -fopenmp -o example1t example1t.c -L../../lib -I../../include -lvsip_c
 example2:	example2.c

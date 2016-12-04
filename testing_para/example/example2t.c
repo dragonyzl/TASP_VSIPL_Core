@@ -14,6 +14,14 @@
 
 int main(){vsip_init((void*)0);
 {
+    printf("Test vsip_gems_f_para\n");
+     int nthreads;
+ #pragma omp parallel
+   {
+     nthreads = omp_get_num_threads();
+   }
+       printf("Number of threads = %d\n", nthreads);
+
    void VU_mprint_f(vsip_mview_f*);
    void VU_mfill_f(vsip_mview_f*, vsip_scalar_f);
    vsip_mview_f *A = vsip_mcreate_f(M,N,VSIP_ROW,0),
@@ -49,7 +57,7 @@ int main(){vsip_init((void*)0);
       }
       end_t = clock();
       wall_timer_end = omp_get_wtime();
-      printf("after para CPU total clock(): %f\nwall time:%f\n", (double)(end_t - start_t) / CLOCKS_PER_SEC,wall_timer_end-wall_timer_start);
+      printf("after para CPU total clock(): %f\nwall time omp_get_wtime():%f\nNUM_THREADS = %d\n\n", (double)(end_t - start_t) / CLOCKS_PER_SEC,wall_timer_end-wall_timer_start,nthreads);
 
    }
    vsip_malldestroy_f(A);

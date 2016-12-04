@@ -195,7 +195,6 @@ vsip_scalar_f *ypiinit=ypi;
         vsip_stride ystride=i*yst;
         *(yprinit+ystride) = *(xprinit+xstride) / (vsip_scalar_f)(scale1+(vsip_scalar_f)i);
         *(ypiinit+ystride) = *(xpiinit+xstride) / (vsip_scalar_f)(scale1+(vsip_scalar_f)i);
-        idx++;
       }
 
 
