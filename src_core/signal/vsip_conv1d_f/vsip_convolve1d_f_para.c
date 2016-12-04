@@ -321,8 +321,7 @@ vsip_offset xioffset = XI->offset;
 
 int idx;
 #pragma omp parallel for reduction(+:xioffset,xroffset,xtoffset,xtlength)
-            for(idx=0;idx<1;idx++){
-  {
+        for(idx=0;idx<1;idx++){
             if(L>0){
                 idx = -1;
                 vsip_offset o = xtlength % XT->stride;
@@ -339,7 +338,6 @@ int idx;
                       xtlength = L;
                       L = 0;
                 }
-            }
                 yt->length = xtlength;
                 XT->length = xtlength;
                 XT->offset = xtoffset;
@@ -364,10 +362,10 @@ int idx;
                     xtoffset += o;
                     xtlength -= o;
                 }
+            }
                 i++;
-            }  
-}
-  }
+        }  
+  
 
 XT->length = xtlength;
 XT->offset = xtoffset;
@@ -425,8 +423,7 @@ vsip_offset xioffset = XI->offset;
 
 int idx;
 #pragma omp parallel for reduction(+:xioffset,xroffset,xtoffset,xtlength)
-            for(idx=0;idx<1;idx++){
-  {
+        for(idx=0;idx<1;idx++){
             if(L>0){
                 idx = -1;
                 vsip_offset o = xtlength % XT->stride;
@@ -443,7 +440,6 @@ int idx;
                       xtlength = L;
                       L = 0;
                 }
-            }
                 yt->length = xtlength;
                 XT->length = xtlength;
                 XT->offset = xtoffset;
@@ -468,10 +464,10 @@ int idx;
                     xtoffset += o;
                     xtlength -= o;
                 }
+            }
                 i++;
-            }  
-}
-  }
+        }  
+  
 
 XT->length = xtlength;
 XT->offset = xtoffset;
@@ -527,8 +523,7 @@ vsip_offset xioffset = XI->offset;
 
 int idx;
 #pragma omp parallel for reduction(+:xioffset,xroffset,xtoffset,xtlength)
-            for(idx=0;idx<1;idx++){
-  {
+        for(idx=0;idx<1;idx++){
             if(L>0){
                 idx = -1;
                 vsip_offset o = xtlength % XT->stride;
@@ -545,7 +540,6 @@ int idx;
                       xtlength = L;
                       L = 0;
                 }
-            }
                 yt->length = xtlength;
                 XT->length = xtlength;
                 XT->offset = xtoffset;
@@ -570,10 +564,10 @@ int idx;
                     xtoffset += o;
                     xtlength -= o;
                 }
+            }
                 i++;
-            }  
-}
-  }
+        }  
+  
 
 XT->length = xtlength;
 XT->offset = xtoffset;
