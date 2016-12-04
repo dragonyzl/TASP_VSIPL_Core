@@ -18,13 +18,26 @@
 #include <omp.h>
 #include <time.h>
 
-#define N  1000000000
-#define L  5
-
-int main(){vsip_init((void*)0);
+int main(int argc, char *argv[]){vsip_init((void*)0);
 {
     printf("Test vsip_vsumsqval_f_para\n");
+
+if(argc < 2){
+      printf("usage\nqrdex N L\n");
+      printf("defaule N 1000000000 L 5\n");
+      N = 1000000000;
+      L = 5;
+   }
+ else {
+                  N    = (vsip_length)atoi(argv[1]);
+                  L    = (vsip_length)atoi(argv[2]);
+ }
+
+
      int nthreads;
+
+
+
  #pragma omp parallel
    {
      nthreads = omp_get_num_threads();
@@ -38,16 +51,6 @@ int main(){vsip_init((void*)0);
    vsip_vramp_f(0,1,A);
 
    vsip_vfill_f(2.5,B);
-
-   vsip_vcopy_f_f_para(A,B);
-
-   vsip_scalar_f sum = vsip_vsumval_f_para(A);
-
-   vsip_scalar_f sqsumpara = vsip_vsumsqval_f_para(A);
-
-   vsip_scalar_f dotpara = vsip_vdot_f_para(A,B);
-
-   vsip_vmul_f_para(A,B,C);
 
 int i;
       clock_t start_t = clock();

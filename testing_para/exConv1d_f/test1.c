@@ -19,12 +19,26 @@
 #define f0 2
 #define fs 10000
 #define Ds 3
-#define Nl 42000000
-#define Ml 42000
 
-int main(){vsip_init((void*)0);
+
+int main(int argc, char *argv[]){vsip_init((void*)0);
 {
 printf("vsip_convolve1d_f_para Test1: VSIP_SUPPORT_FULL\n");
+
+      vsip_length Ml,Nl;
+
+if(argc < 2){
+      printf("usage\nqrdex Nl Ml\n");
+      printf("defaule Nl42000000 Ml42000\n");
+      Ml = 42000000;
+      Nl = 42000;
+   }
+ else {
+                  Ml    = (vsip_length)atoi(argv[1]);
+                  Nl    = (vsip_length)atoi(argv[2]);
+ }
+
+
  int nthreads;
  #pragma omp parallel
    {

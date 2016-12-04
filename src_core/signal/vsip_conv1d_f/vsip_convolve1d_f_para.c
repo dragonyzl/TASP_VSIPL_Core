@@ -29,21 +29,21 @@ void vsip_convolve1d_f_para(
      xt->offset = xtn2; xt->length = x->length - xtn2; vsip_vcopy_f_f(xt,xi);
      /* do the fft on the input data */
      /**************************************************/
-     vsip_ccfftip_f(conv->fft,conv->x);
+     vsip_ccfftip_f_para(conv->fft,conv->x);
      /* multiply time filter in frequency domain */
-     vsip_cvmul_f(conv->H,conv->x,conv->x);
+     vsip_cvmul_f_para(conv->H,conv->x,conv->x);
      /* do invers fft using forward fft */
-     vsip_cvconj_f(conv->x,conv->x);
-     vsip_rscvmul_f((vsip_scalar_f)1.0/(vsip_scalar_f)conv->x->length,conv->x,conv->x);
+     vsip_cvconj_f_para(conv->x,conv->x);
+     vsip_rscvmul_f_para((vsip_scalar_f)1.0/(vsip_scalar_f)conv->x->length,conv->x,conv->x);
      /**************************************************/
-     vsip_ccfftip_f(conv->fft,conv->x);
-     vsip_cvconj_f(conv->x,conv->x);
+     vsip_ccfftip_f_para(conv->fft,conv->x);
+     vsip_cvconj_f_para(conv->x,conv->x);
      /* do overlap add of real with complex */
      xr->offset = xtn2; 
      xr->length = conv->nh - 1;
      xi->offset = 0; 
      xi->length = xr->length;
-     vsip_vadd_f(xr,xi,xi);
+     vsip_vadd_f_para(xr,xi,xi);
      /* set length and offset of real to first half without overlap */
      xr->length = xr->offset; 
      xr->offset = 0; 
@@ -64,10 +64,10 @@ void vsip_convolve1d_f_para(
         }
         xi->length = conv->Noutput - xr->length;
         yt->length = xr->length;
-        vsip_vcopy_f_f(xr,yt);
+        vsip_vcopy_f_f_para(xr,yt);
         yt->length = xi->length;
         yt->offset += (yt->stride * xr->length);
-        vsip_vcopy_f_f(xi,yt);
+        vsip_vcopy_f_f_para(xi,yt);
      }
      if(conv->support == VSIP_SUPPORT_MIN){
         vsip_vview_f yyt = *y;
@@ -75,7 +75,7 @@ void vsip_convolve1d_f_para(
         if(xtn2 < conv->nh) {
           xi->offset = conv->nh - xtn2 -1;
           xi->length = conv->Noutput;
-          vsip_vcopy_f_f(xi,yt);
+          vsip_vcopy_f_f_para(xi,yt);
         } else { 
           xr->offset = conv->nh - 1;
           xr->length = (xr->length - xr->offset);
@@ -88,10 +88,10 @@ void vsip_convolve1d_f_para(
           }
           xi->length = conv->Noutput - xr->length;
           yt->length = xr->length;
-          vsip_vcopy_f_f(xr,yt);
+          vsip_vcopy_f_f_para(xr,yt);
           yt->length = xi->length;
           yt->offset += (yt->stride * xr->length);
-          vsip_vcopy_f_f(xi,yt);
+          vsip_vcopy_f_f_para(xi,yt);
         }  
      }
      if(conv->support == VSIP_SUPPORT_FULL){
@@ -106,10 +106,10 @@ void vsip_convolve1d_f_para(
        }
        xi->length = conv->Noutput - xr->length;
        yt->length = xr->length;
-       vsip_vcopy_f_f(xr,yt);
+       vsip_vcopy_f_f_para(xr,yt);
        yt->length = xi->length;
        yt->offset += (yt->stride * xr->length);
-       vsip_vcopy_f_f(xi,yt);
+       vsip_vcopy_f_f_para(xi,yt);
       }
    }else{
       vsip_cmview_f XXm = *conv->Xm,
@@ -140,7 +140,7 @@ void vsip_convolve1d_f_para(
 
 /*
            while(L > 0){
-              vsip_vcopy_f_f(X,XT);
+              vsip_vcopy_f_f_para(X,XT);
               X->offset += Xinc;
               if(i%2) { 
                    XT = XI;
@@ -154,7 +154,7 @@ void vsip_convolve1d_f_para(
               } else {
                    XT->length = L;
                    X->length = L;
-                   vsip_vcopy_f_f(X,XT);
+                   vsip_vcopy_f_f_para(X,XT);
                    L = 0;
               }
               i++;
@@ -173,7 +173,7 @@ unsigned int itertimes;
               itertimes+=i;
 #pragma omp parallel for
         for(i=1;i<itertimes;i++){
-              vsip_vcopy_f_f(X,XT);
+              vsip_vcopy_f_f_para(X,XT);
               X->offset = xoffset + i * Xinc;
               if(i%2) { 
                    XT = XI;
@@ -202,30 +202,30 @@ unsigned int itertimes;
 
               XT->length = L;
               X->length = L;
-              vsip_vcopy_f_f(X,XT);
+              vsip_vcopy_f_f_para(X,XT);
               L=0;
 
 /********************************END*********************************/
 
        } else { 
            XR->length = X->length;
-           vsip_vcopy_f_f(X,XR);
+           vsip_vcopy_f_f_para(X,XR);
        }
      }
      { /* do forward fft and multiply the filter (freq domain kernel) */
       /**************************ccfftmip************************/
-          vsip_ccfftmip_f(conv->fftm,Xm);
-          vsip_cvmmul_f(conv->H,Xm,VSIP_ROW,Xm);
+          vsip_ccfftmip_f_para(conv->fftm,Xm);
+          vsip_cvmmul_f_para(conv->H,Xm,VSIP_ROW,Xm);
      }
      {  /* do inverse fft using forward fft */
           vsip_cvview_f XXVt,
                         *XVt = VI_cmrowview_f(Xm,0,&XXVt);
           XVt->length = Xm->row_length * Xm->col_length; /* flaten matrix */
-          vsip_cvconj_f(XVt,XVt); /* conjugate */
-          vsip_rscvmul_f((vsip_scalar_f)1.0/Xm->row_length,XVt,XVt); /* scale */
+          vsip_cvconj_f_para(XVt,XVt); /* conjugate */
+          vsip_rscvmul_f_para((vsip_scalar_f)1.0/Xm->row_length,XVt,XVt); /* scale */
     /**************************ccfftmip************************/
-          vsip_ccfftmip_f(conv->fftm,Xm); /* forward fftm */
-          vsip_cvconj_f(XVt,XVt); /* conjugate */
+          vsip_ccfftmip_f_para(conv->fftm,Xm); /* forward fftm */
+          vsip_cvconj_f_para(XVt,XVt); /* conjugate */
      }
      { /* do overlap add */
           vsip_length i;
@@ -249,7 +249,7 @@ unsigned int itertimes;
                    xi->offset += xinc;
              }
              xo->offset += Oo;
-             vsip_vadd_f(xo,xa,xa);
+             vsip_vadd_f_para(xo,xa,xa);
           } 
       }
       { /* copy to output vector */
@@ -288,7 +288,7 @@ unsigned int itertimes;
                       L = 0;
                 }
                 yt->length = XT->length;
-                vsip_vcopy_f_f(XT,yt);
+                vsip_vcopy_f_f_para(XT,yt);
                 yt->offset += (yt->length * yt->stride);
                 if(i%2){
                     XXT = XXI;
@@ -390,7 +390,7 @@ XR->offset = xroffset;
                       L = 0; 
                 } 
                 yt->length = XT->length;
-                vsip_vcopy_f_f(XT,yt);
+                vsip_vcopy_f_f_para(XT,yt);
                 yt->offset += (yt->length * yt->stride);
                 if(i%2){
                     XXT = XXI;
@@ -492,7 +492,7 @@ XR->offset = xroffset;
                       L = 0;  
                 }  
                 yt->length = XT->length; 
-                vsip_vcopy_f_f(XT,yt); 
+                vsip_vcopy_f_f_para(XT,yt); 
                 yt->offset += (yt->length * yt->stride); 
                 if(i%2){ 
                     XXT = XXI;   

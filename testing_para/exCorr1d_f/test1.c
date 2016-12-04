@@ -22,12 +22,25 @@
 
 #define f0 25
 #define fs 128
-#define Nval 75000000
-#define Mval 50000000
 
-int main(){vsip_init((void*)0);
+int main(int argc, char *argv[]){vsip_init((void*)0);
 {
     printf("vsip_correlate1d_f_para Test1: VSIP_SUPPORT_FULL, VSIP_UNBIASED\n");
+
+      vsip_length Mval,Nval;
+
+if(argc < 2){
+      printf("usage\nqrdex Nval Mval\n");
+      printf("defaule Nval75000000 Mval50000000\n");
+      Nval = 75000000;
+      Mval = 50000000;
+   }
+ else {
+                  Nval    = (vsip_length)atoi(argv[1]);
+                  Mval    = (vsip_length)atoi(argv[2]);
+ }
+
+
  int nthreads;
  #pragma omp parallel
    {

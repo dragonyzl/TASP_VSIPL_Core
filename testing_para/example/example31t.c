@@ -13,13 +13,13 @@
 
 int main(int argc, char *argv[]){vsip_init((void*)0);
 {
-    printf("Test vsip_gemp_f_para\n");
+    printf("Test vsip_gems_f_para\n");
 
       vsip_length M,N,P,L;
 
 if(argc < 4){
       printf("usage\nqrdex M N P L\n");
-      printf("defaule M 420000 N 420000 P 3 L 1\n");
+      printf("defaule M420000 N420000 P3 L1\n");
       M = 420000;
       N = 420000;
       P = 3;
@@ -63,7 +63,7 @@ if(argc < 4){
       clock_t start_t = clock();
       double wall_timer_start = omp_get_wtime();
       for(i=0; i<L; i++){
-         vsip_gemp_f(alpha,A,OpA,B,OpB,beta,C);
+         vsip_gems_f(alpha,A,OpA,beta,C);
       }
       clock_t end_t = clock();
       double wall_timer_end = omp_get_wtime();
@@ -72,7 +72,7 @@ if(argc < 4){
       start_t = clock();
       wall_timer_start = omp_get_wtime();
       for(i=0; i<L; i++){
-         vsip_gemp_f_para(alpha,A,OpA,B,OpB,beta,D);
+         vsip_gems_f_para(alpha,A,OpA,beta,D);
       }
       end_t = clock();
       wall_timer_end = omp_get_wtime();
@@ -98,41 +98,3 @@ void VU_mfill_f(vsip_mview_f *X, vsip_scalar_f a)
     return;
 }
      
-/* expected output */
-/* A input 
-/ [
-/ 1.0000  1.0000  1.0000 ;
-/ 1.0000  2.0000  2.4142 ;
-/ 1.0000  2.4142  3.0000 ;
-/ 1.0000  2.7321  3.4495 ;
-/ ];
-/ 
-/  B input 
-/ [
-/ 1.0000  1.0000  1.0000  1.0000  1.0000 ;
-/ 1.0000  2.0000  3.0000  4.0000  5.0000 ;
-/ 1.0000  3.0000  5.0000  7.0000  9.0000 ;
-/ ];
-/ alpha= 2.000000, beta= 3.500000,
-/ OpA 0
-/ C number 0
-/ [
-/ 6.0000  12.0000  18.0000  24.0000  30.0000 ;
-/ 10.8284  24.4853  38.1421  51.7990  65.4558 ;
-/ 12.8284  29.6569  46.4853  63.3137  80.1421 ;
-/ 14.3631  33.6251  52.8872  72.1493  91.4113 ;
-/ ];
-/ C number 1
-/ [
-/ 27.0000  54.0000  81.0000  108.0000  135.0000 ;
-/ 48.7279  110.1838  171.6396  233.0955  294.5513 ;
-/ 57.7279  133.4558  209.1838  284.9117  360.6396 ;
-/ 64.6339  151.3131  237.9924  324.6717  411.3510 ;
-/ ];
-/ C number 2
-/ [
-/ 100.5000  201.0000  301.5000  402.0000  502.5000 ;
-/ 181.3762  410.1285  638.8807  867.6332  1096.3853 ;
-/ 214.8762  496.7523  778.6285  1060.5046  1342.3806 ;
-/ 240.5816  563.2211  885.8607  1208.5002  1531.1396 ;
-/ ]; */

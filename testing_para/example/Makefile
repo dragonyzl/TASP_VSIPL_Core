@@ -1,4 +1,4 @@
-all : example1 example1t example2 example2t example3 example3t example11t example12t example13t
+all : example1 example1t example2 example2t example3 example3t example31t example11t example12t example13t
 
 example1:	example1.c
 	gcc -fopenmp -o example1 example1.c -L../../lib -I../../include -lvsip_c
@@ -23,6 +23,9 @@ example3:	example3.c
 example3t:	example3t.c
 	gcc -I../../include -L../../lib -DVSIP_PERFORMANCE_MODE \
 	-O2 -Wall -ansi -pedantic -fopenmp -o example3t example3t.c -lvsip_c -lm
+example3t:	example31t.c
+	gcc -I../../include -L../../lib -DVSIP_PERFORMANCE_MODE \
+	-O2 -Wall -ansi -pedantic -fopenmp -o example31t example31t.c -lvsip_c -lm
 
 clean:	
 	rm -f example1 *.exe
