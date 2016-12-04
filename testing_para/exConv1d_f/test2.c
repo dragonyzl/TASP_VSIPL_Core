@@ -19,7 +19,8 @@
 #define f0 2
 #define fs 10000
 #define Ds 3
-#define Nl 4200000
+#define L  10
+#define Nl 42000
 #define Ml 420
 
 int main(){vsip_init((void*)0);
@@ -66,7 +67,9 @@ printf("vsip_convolve1d_f_para Test2: VSIP_SUPPORT_SAME\n");
 
       double wall_timer_start = omp_get_wtime();
        clock_t start_t = clock();
-      vsip_convolve1d_f(conv2,x2,y2);
+       for(i=0;i<L;i++){
+            vsip_convolve1d_f(conv2,x2,y2);
+       }
       double wall_timer_end = omp_get_wtime();
        clock_t end_t = clock();
        printf("before para CPU total clock(): %f\nwall time omp_get_wtime():%f\n\n", (double)(end_t - start_t) / CLOCKS_PER_SEC,wall_timer_end-wall_timer_start); 
@@ -81,7 +84,9 @@ printf("vsip_convolve1d_f_para Test2: VSIP_SUPPORT_SAME\n");
 
        wall_timer_start = omp_get_wtime();
         start_t = clock();
+       for(i=0;i<L;i++){
       vsip_convolve1d_f_para(conv,x,y);
+       }
        wall_timer_end = omp_get_wtime();
         end_t = clock();
        printf("after para CPU total clock(): %f\nwall time omp_get_wtime():%f\nNUM_THREADS = %d\n\n", (double)(end_t - start_t) / CLOCKS_PER_SEC,wall_timer_end-wall_timer_start,nthreads);
