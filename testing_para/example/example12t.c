@@ -35,6 +35,7 @@ if(argc < 2){
                   L    = (vsip_length)atoi(argv[2]);
  }
 
+
      int nthreads;
  #pragma omp parallel
    {
