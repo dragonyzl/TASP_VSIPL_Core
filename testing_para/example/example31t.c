@@ -20,8 +20,8 @@ int main(int argc, char *argv[]){vsip_init((void*)0);
 if(argc < 4){
       printf("usage\nqrdex M N P L\n");
       printf("defaule M420000 N420000 P3 L1\n");
-      M = 420000;
-      N = 420000;
+      M = 42000;
+      N = 42000;
       P = 3;
       L = 1;
    }
@@ -72,7 +72,7 @@ if(argc < 4){
       start_t = clock();
       wall_timer_start = omp_get_wtime();
       for(i=0; i<L; i++){
-         vsip_gems_f_para(alpha,A,OpA,beta,D);
+         vsip_gems_f_para(alpha,B,OpA,beta,D);
       }
       end_t = clock();
       wall_timer_end = omp_get_wtime();

@@ -20,8 +20,8 @@ int main(int argc, char *argv[]){vsip_init((void*)0);
 if(argc < 4){
       printf("usage\nqrdex M N P L\n");
       printf("defaule M 420000 N 420000 P 3 L 1\n");
-      M = 420000;
-      N = 420000;
+      M = 42000;
+      N = 42000;
       P = 3;
       L = 1;
    }

@@ -61,7 +61,6 @@ int i;
 
       start_t = clock();
       wall_timer_start = omp_get_wtime();
-#pragma omp parallel for
       for(i=0; i<L; i++){
           double sqsumpara = vsip_vsumval_f_para(A);
       }

@@ -19,9 +19,22 @@
 #define Nl 10000
 #define Ml 500
 
-int main(){vsip_init((void*)0);
+int main(int argc, char *argv[]){vsip_init((void*)0);
 {
-  int mode;
+  int mode,Ml,Nl;
+if(argc < 3){
+      printf("usage\nqrdex mode Nl Ml\n");
+      printf("defaule mode 1 (VSIP_SUPPORT_FULL) Nl 10000 Ml 500  \n");
+      mode=1;
+      Nl = 10000;
+      Ml = 500;
+   }
+ else {
+                  mode    = (vsip_length)atoi(argv[1]);
+                  Nl    = (vsip_length)atoi(argv[2]);
+                  Ml    = (vsip_length)atoi(argv[2]);
+ }
+
    vsip_length Yl = Nl + Ml -1;
    vsip_vview_f *h = vsip_vcreate_hanning_f(Ml,0)/*vsip_vcreate_f(1024,0)*/,
                 *x = vsip_vcreate_f(Nl,0),
@@ -49,7 +62,6 @@ int main(){vsip_init((void*)0);
    fflush(stdout);
 
 
-mode=2;
 switch (mode)
 {
   case 1:

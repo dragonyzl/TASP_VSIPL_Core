@@ -18,8 +18,6 @@
 #include <omp.h>
 #include <time.h>
 
-#define N  1000000000
-#define L  5
 
 int main(int argc, char *argv[]){vsip_init((void*)0);
 {
