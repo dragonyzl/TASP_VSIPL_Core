@@ -17,19 +17,17 @@ int main(int argc, char *argv[]){vsip_init((void*)0);
 
       vsip_length M,N,P,L;
 
-if(argc < 4){
+if(argc < 3){
       printf("usage\nqrdex M N P L\n");
-      printf("defaule M420000 N420000 P3 L1\n");
+      printf("defaule M42000 N42000 L1\n");
       M = 42000;
       N = 42000;
-      P = 3;
       L = 1;
    }
  else {
                   M    = (vsip_length)atoi(argv[1]);
                   N    = (vsip_length)atoi(argv[2]);
-                  P    = (vsip_length)atoi(argv[3]);
-                  L    = (vsip_length)atoi(argv[4]);
+                  L    = (vsip_length)atoi(argv[3]);
  }
      int nthreads;
  #pragma omp parallel
@@ -38,17 +36,17 @@ if(argc < 4){
    }
        printf("Number of threads = %d\n", nthreads);
    void VU_mfill_f(vsip_mview_f*, vsip_scalar_f);
-   vsip_mview_f *A = vsip_mcreate_f(M,N,VSIP_ROW,0),
-                *B = vsip_mcreate_f(P,M,VSIP_ROW,0),
-                *C = vsip_mcreate_f(N,P,VSIP_ROW,0),
-                *D = vsip_mcreate_f(N,P,VSIP_ROW,0);
+   vsip_mview_f *A = vsip_mcreate_f(N,M,VSIP_ROW,0),
+                *B = vsip_mcreate_f(N,M,VSIP_ROW,0),
+                *C = vsip_mcreate_f(N,M,VSIP_ROW,0),
+                *D = vsip_mcreate_f(N,M,VSIP_ROW,0);
    int row, col,i;
-   for(row=0;row<M;row++) for(col=0;col<N;col++)
+   for(row=0;row<N;row++) for(col=0;col<M;col++)
         vsip_mput_f(A,row,col,1 + sqrt(col*row));
    
-   for(row=0;row<P;row++) for(col=0;col<M;col++)
-        vsip_mput_f(B,row,col,1 + row * col);
-   
+   for(row=0;row<N;row++) for(col=0;col<M;col++)
+        vsip_mput_f(B,row,col,1 + sqrt(col*row));
+
    VU_mfill_f(C,0);
    VU_mfill_f(D,0);
 
@@ -72,7 +70,7 @@ if(argc < 4){
       start_t = clock();
       wall_timer_start = omp_get_wtime();
       for(i=0; i<L; i++){
-         vsip_gems_f_para(alpha,B,OpA,beta,D);
+         vsip_gems_f_para(alpha,B,OpB,beta,D);
       }
       end_t = clock();
       wall_timer_end = omp_get_wtime();
