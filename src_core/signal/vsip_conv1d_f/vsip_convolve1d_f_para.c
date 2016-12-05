@@ -408,7 +408,6 @@ XR->offset = xroffset;
 */
 
 /*******************************BEGIN**********************************/
-
 vsip_length xtlength = XT->length;
 vsip_offset ytoffset = yt->offset;
 vsip_offset xtoffset = XT->offset;
