@@ -122,5 +122,8 @@ default:
    vsip_valldestroy_f(x);
    vsip_valldestroy_f(h);
    vsip_valldestroy_f(y);
+   vsip_valldestroy_f(x2);
+   vsip_valldestroy_f(h2);
+   vsip_valldestroy_f(y2);
    } vsip_finalize((void*)0); return 0;
 }
