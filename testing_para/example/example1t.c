@@ -21,7 +21,7 @@
 int main(int argc, char *argv[]){vsip_init((void*)0);
 {
     printf("Test vsip_vsumsqval_f_para\n");
-
+int L,N;
 if(argc < 2){
       printf("usage\nqrdex N L\n");
       printf("defaule N 1000000000 L 5\n");
@@ -56,7 +56,7 @@ int i;
       clock_t start_t = clock();
       double wall_timer_start = omp_get_wtime();
       for(i=0; i<L; i++){
-         sqsumpara = vsip_vsumsqval_f(A);
+         double sqsumpara = vsip_vsumsqval_f(A);
       }
       clock_t end_t = clock();
       double wall_timer_end = omp_get_wtime();
@@ -66,7 +66,7 @@ int i;
       wall_timer_start = omp_get_wtime();
 #pragma omp parallel for
       for(i=0; i<L; i++){
-          sqsumpara = vsip_vsumsqval_f_para(A);
+          double sqsumpara = vsip_vsumsqval_f_para(A);
       }
       end_t = clock();
       wall_timer_end = omp_get_wtime();

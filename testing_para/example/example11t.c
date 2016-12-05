@@ -22,7 +22,7 @@
 int main(int argc, char *argv[]){vsip_init((void*)0);
 {
     printf("Test vsip_vsumval_f_para\n");
-
+int L,N;
 if(argc < 2){
       printf("usage\nqrdex N L\n");
       printf("defaule N 10000000 L 5\n");

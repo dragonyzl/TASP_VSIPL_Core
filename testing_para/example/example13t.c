@@ -25,7 +25,7 @@ int main(int argc, char *argv[]){vsip_init((void*)0);
 {
     printf("Test vsip_vmul_f_para\n");
 
-
+int L,N;
 if(argc < 2){
       printf("usage\nqrdex N L\n");
       printf("defaule N 1000000000 L 5\n");
