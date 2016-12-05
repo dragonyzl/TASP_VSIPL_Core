@@ -16,8 +16,6 @@
 #define f0 2
 #define fs 10000
 #define Ds 3
-#define Nl 10000
-#define Ml 500
 
 int main(int argc, char *argv[]){vsip_init((void*)0);
 {

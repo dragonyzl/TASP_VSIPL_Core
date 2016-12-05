@@ -5157,13 +5157,6 @@ void vsip_correlate1d_d(
       const vsip_vview_d *h,
       const vsip_vview_d *x,
       const vsip_vview_d *y);
-
-void vsip_correlate1d_d_para(
-      const vsip_corr1d_d *cor,
-      vsip_bias bias,
-      const vsip_vview_d *h,
-      const vsip_vview_d *x,
-      const vsip_vview_d *y);
  
 void vsip_corr1d_getattr_d(
       const vsip_corr1d_d*,

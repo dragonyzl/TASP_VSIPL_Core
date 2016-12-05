@@ -4,7 +4,7 @@
 CC=gcc
 INCLUDE=-I../../../include -I../../../include/privateC
 DEFINES=-DVSIP_PERFORMANCE_MODE
-OPTIONS=-O2 -Wall -ansi -pedantic
+OPTIONS=-O2 -Wall -ansi -pedantic -fopenmp
 AR=ar
 AR_OPTIONS=rcvs
 ARLIB=libvsip_c.a
