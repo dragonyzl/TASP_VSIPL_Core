@@ -1,4 +1,5 @@
 
+HPC Porject
 OpenMP parallelization by Sizhang Dai
 sizhang@gwu.edu
 
@@ -6,6 +7,8 @@ How to compile
 use "make".
 
 All the files or functions' names with '_para' suffix are paralleized using OpenMP
+All the files that I made add or change to original libaray are listed in 'Modified File Tree.txt'
+
 
 The 'testing_para' folder contains testing code for corretness and porformance tests
 testing_para/example contains performance testing code for vector and matrix functions as described below

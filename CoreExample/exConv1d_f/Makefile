@@ -13,10 +13,6 @@ COMPILED=$(CC) $(INCLUDE) $(LIBRARY) $(DEFINED) $(OPTIONS)
 
 conv1dEx:	conv1dEx.c
 	$(COMPILEP) -o conv1dEx conv1dEx.c $(librariesP)
-	$(COMPILEP) -o conv1dEx_para conv1dEx_para.c $(librariesP)
-
-para:	conv1dEx_para.c
-	$(COMPILEP) -o conv1dEx_para conv1dEx_para.c $(librariesP)
 
 development:	conv1dExD
 
@@ -25,4 +21,3 @@ conv1dExD:	conv1dEx.c
 
 clean:
 	rm -f conv1dEx *.exe
-	rm -f conv1dEx_para *.exe
